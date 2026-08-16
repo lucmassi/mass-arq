@@ -98,11 +98,11 @@ function initCustomCursor() {
 
   // Hover targets
   const hoverables = [
-    { selector: '.monograph-card', text: 'EXPLORE' },
-    { selector: '.btn-cta', text: 'INQUIRE' },
-    { selector: '.material-card', text: 'SELECT' },
-    { selector: '.nav-link, .filter-btn', text: 'VIEW' },
-    { selector: '.modal-close-btn', text: 'CLOSE' }
+    { selector: '.monograph-card', text: 'VER PROJETO' },
+    { selector: '.btn-cta', text: 'INICIAR' },
+    { selector: '.material-card', text: 'SELECIONAR' },
+    { selector: '.nav-link, .filter-btn', text: 'VER' },
+    { selector: '.modal-close-btn', text: 'FECHAR' }
   ];
 
   hoverables.forEach(({ selector, text }) => {
@@ -266,7 +266,7 @@ const monographsData = {
   parnaiba: {
     id: "parnaiba",
     title: "Residência Santana de Parnaíba",
-    subtitle: "Monolithic Courtyard Residence with Integrated Solar Orientation",
+    subtitle: "Residência Monolítica com Pátio e Orientação Solar Integrada",
     category: "residential",
     year: "2013",
     location: "Santana de Parnaíba, SP",
@@ -281,13 +281,14 @@ const monographsData = {
       "mass_arquitetura/images/DUqNMjcEQd9_0.jpg"
     ],
     description: `Organizada rigorosamente em dois pavimentos com orientação solar norte privilegiada, a Residência Santana de Parnaíba estabelece uma transição contínua entre a ala social e o jardim privativo. Caixilhos em alumínio de piso ao teto recolhem-se inteiramente nas alvenarias, transformando o amplo living em uma varanda habitável com controle térmico e luz abundante.`,
+
     specs: [
       { label: "Estrutura", val: "Concreto Armado Protendido & Alvenaria Estrutural" },
-      { label: "Caixilharia", val: "Alumínio Anodizado Preto Sol-a-Pino (@jmaresquadrias)" },
+      { label: "Caixilharia", val: "Alumínio Anodizado Preto Sol-a-Pino (JMar Esquadrias)" },
       { label: "Materialidade", val: "Lambri de Ipê, Cerâmica Portobello & Textura Terracor" },
       { label: "Mobiliário", val: "Tora Brasil, Carlos Motta, Artesian, Empório Beraldin" },
       { label: "Iluminação", val: "Arquitetura de Luz LABLUZ / Goe Light / Reka" },
-      { label: "Fotografia", val: "Ana Mello (@anamello) | Paisagismo: Daniela Ramalho" }
+      { label: "Fotografia", val: "Ana Mello | Paisagismo: Daniela Ramalho" }
     ],
     blueprintSvg: `<svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="400" fill="#040a10"/>
@@ -312,7 +313,7 @@ const monographsData = {
   quiririm: {
     id: "quiririm",
     title: "Residência em Quiririm",
-    subtitle: "Modular Tectonic Steel Frame at Mantiqueira Foothills",
+    subtitle: "Estrutura Metálica Modular na Mantiqueira",
     category: "residential",
     year: "2016",
     location: "Taubaté, SP — Serra da Mantiqueira",
@@ -344,7 +345,7 @@ const monographsData = {
   sc: {
     id: "sc",
     title: "Estudo Residência Santa Catarina",
-    subtitle: "Oceanfront Glulam & Fair-Faced Concrete Architecture",
+    subtitle: "Arquitetura Costeira em MLC & Concreto à Vista",
     category: "concepts",
     year: "2025",
     location: "Governador Celso Ramos, SC",
@@ -359,7 +360,7 @@ const monographsData = {
       { label: "Estrutura Mista", val: "Concreto C40 + Vigas de Madeira Laminada Colada (MLC)" },
       { label: "Vidros", val: "Vidros Low-E Dupos com Atenuação Térmica Operável" },
       { label: "Parceria", val: "Mass Arquitetura + Norea De Vitto" },
-      { label: "Visualização", val: "Studio Lion 3D (@studiolion.3d)" }
+      { label: "Visualização", val: "Studio Lion 3D" }
     ],
     blueprintSvg: `<svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="400" fill="#040a10"/>
@@ -371,7 +372,7 @@ const monographsData = {
   corporativo: {
     id: "corporativo",
     title: "Espaço Comercial & Corporativo",
-    subtitle: "Adaptive Reuse & Structural Glazing Facade",
+    subtitle: "Reutilização Adaptativa & Fachada Estrutural em Vidro",
     category: "corporate",
     year: "2013",
     location: "Jardins, São Paulo, SP",
@@ -386,7 +387,7 @@ const monographsData = {
     specs: [
       { label: "Fachada", val: "Pele de Vidro Structural Glazing com Filtro UV" },
       { label: "Sistemas", val: "Automação Integrada & Climatização VRF Inverter" },
-      { label: "Fotografia", val: "Pedro Coltro (@pedrocoltro)" }
+      { label: "Fotografia", val: "Pedro Coltro" }
     ],
     blueprintSvg: `<svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="400" fill="#040a10"/>
@@ -399,7 +400,7 @@ const monographsData = {
   ipojuca: {
     id: "ipojuca",
     title: "Residência Vila Ipojuca",
-    subtitle: "Narrow-Lot Topographical Precision",
+    subtitle: "Precisão Topográfica em Lote Estreito",
     category: "residential",
     year: "2014",
     location: "Vila Ipojuca, São Paulo, SP",
@@ -424,7 +425,7 @@ const monographsData = {
   perdizes: {
     id: "perdizes",
     title: "Reforma Apartamento Perdizes",
-    subtitle: "High-Craft Wooden Joinery & Tactile Interiors",
+    subtitle: "Marcenaria Autoral em Ipê & Pedra Tátil",
     category: "residential",
     year: "2025",
     location: "Perdizes, São Paulo, SP",
@@ -437,10 +438,10 @@ const monographsData = {
     ],
     description: `Renovação de interiores integrando estar, jantar e gastronomia através de marcenaria autoral em painéis de Ipê maciço. Os painéis camuflam portas pivotantes e garantem conforto acústico sofisticado.`,
     specs: [
-      { label: "Marcenaria", val: "Painéis de Ipê Maciço (@artlacapm)" },
-      { label: "Revestimentos", val: "Mármore Grigio (@graniston.marmoraria)" },
+      { label: "Marcenaria", val: "Painéis de Ipê Maciço (Artla Capm)" },
+      { label: "Revestimentos", val: "Mármore Grigio (Graniston Marmoraria)" },
       { label: "Iluminação", val: "LABLUZ Arquitetura de Luz" },
-      { label: "Visualização 3D", val: "Studio Lion 3D (@studiolion.3d)" }
+      { label: "Visualização 3D", val: "Studio Lion 3D" }
     ],
     blueprintSvg: `<svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="800" height="400" fill="#040a10"/>
@@ -626,7 +627,7 @@ function initConsultationModal() {
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Thank you for your inquiry. Mass Arquitetura principal office will contact you within 24 hours.');
+      alert('Obrigado pelo seu inquérito. O escritório Mass Arquitetura entrará em contato em até 24 horas.');
       modal.classList.remove('open');
       document.body.style.overflow = '';
       if (lenis) lenis.start();
