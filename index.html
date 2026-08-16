@@ -166,13 +166,29 @@ footer{border-top:1px solid var(--border);padding:clamp(40px,6vh,60px) 0 clamp(2
 .foot-col li{font-size:.78rem;color:var(--t3);list-style:none;margin-bottom:8px;line-height:1.5}
 .foot-col a:hover{color:var(--t1)}
 .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);padding-top:32px;font-size:.6rem;color:var(--t3);letter-spacing:1px}
+
+@keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* --- Custom Circle Cursor --- */
+#cursor-circle{position:fixed;width:40px;height:40px;pointer-events:none;top:var(--mouse-y,0);left:var(--mouse-x,0);transform:translate(-50%,-50%);z-index:9999}
+#cursor-circle .cursor-inner{width:40px;height:40px;border:2px solid var(--accent);border-radius:50%;transition:width .3s,height .3s,background .3s}
+#cursor-circle .cursor-inner:hover{width:80px;height:80px;background:var(--accent)}
+#cursor-circle .cursor-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--bg);white-space:nowrap;pointer-events:none;transition:opacity .2s}
+#cursor-circle .cursor-text.visible{opacity:1}
+#cursor-circle.active .cursor-inner{background:var(--accent);width:80px;height:80px;border:none}
+
+/* ---- Hover states ---- */
+.proj:hover,#cursor-circle.active{cursor:none}
+#cursor-circle:hover .cursor-text{opacity:1}
+
+/* ---- Reduce motion ---- */
+@media(max-reduce:reduce){#cursor-circle{display:none}}
 </style>
 </head>
 <body>
-
-<!-- Custom Magnetic Cursor -->
-<div id="custom-cursor">
-  <span class="cursor-text"></span>
+<div id="cursor-circle">
+  <div class="cursor-inner"></div>
+  <div class="cursor-text"></div>
 </div>
 
 <!-- WebGL Background Canvas -->
@@ -187,7 +203,6 @@ footer{border-top:1px solid var(--border);padding:clamp(40px,6vh,60px) 0 clamp(2
 <!-- Skip Link -->
 <a href="#portfolio" class="skip-link">Pular para o conteúdo</a>
 
-<!-- Navigation -->
 <nav id="nav">
   <a href="#" class="brand">Mass Arquitetura<span class="brand-sub">São Paulo // Nova York</span></a>
   <ul class="nav-links">
@@ -450,6 +465,40 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeOverlay(){overlay.classList.remove('open');document.body.style.overflow=''}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
 });
+
+// CUSTOM CIRCLE CURSOR
+const cursorCircle=document.getElementById('cursor-circle');
+const cursorInner=document.querySelector('#cursor-circle .cursor-inner');
+const cursorText=document.querySelector('#cursor-circle .cursor-text');
+let mouseX=0,mouseY=0;
+
+document.addEventListener('mousemove',e=>{
+  mouseX=e.clientX;
+  mouseY=e.clientY;
+  cursorCircle.style.setProperty('--mouse-x',\`${mouseX}px\`);
+  cursorCircle.style.setProperty('--mouse-y',\`${mouseY}px\`);
+});
+
+interactables=document.querySelectorAll('.proj,.btn-cta,.nav-links a,.material-card,.filter-btn,.menu-btn');
+interactables.forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursorInner.classList.add('hover');
+    if(cursorText){cursorText.classList.add('visible');cursorText.textContent=getInteractableText(el);}
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursorInner.classList.remove('hover');
+    if(cursorText){cursorText.classList.remove('visible');cursorText.textContent='';}
+ });
+});
+
+function getInteractableText(el){
+  if(el.classList.contains('proj'))return'EXPLORE';
+  if(el.classList.contains('btn-cta'))return'INQUIRE';
+  if(el.classList.contains('material-card'))return'SELECT';
+  if(el.classList.contains('filter-btn'))return'VIEW';
+  if(el.classList.contains('menu-btn'))return'MENU';
+  return '';
+}
 
 // Lenis Smooth Scroll
 try{
