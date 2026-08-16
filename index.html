@@ -1,538 +1,495 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mass Arquitetura — São Paulo // Nova York | Arquitetura de Alto Padrão</title>
-<meta name="description" content="Mass Arquitetura — escritório de arquitetura de alto padrão fundado por Gustavo Massimino (M.Arch FAU-USP). Atuação global no eixo São Paulo e Nova York.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mass Arquitetura — São Paulo // New York | High-Ticket Architecture Monograph</title>
+  <meta name="description" content="Mass Arquitetura é um escritório de arquitetura de alto padrão fundado por Gustavo Massimino (M.Arch FAU-USP), com atuação global no eixo São Paulo e Nova York. Especializado em residências de luxo, edifícios corporativos e retrofits tectônicos.">
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
 
-<!-- Style -->
-<style>
-*::{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--surface:#101010;--border:rgba(255,255,255,.07);
-  --t1:#f4f4f2;--t2:#a0a09c;--t3:#666662;--accent:#d8c3b0;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
-  --g:clamp(20px,4vw,56px);
-}
-html{font-size:16px;background:var(--bg);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{background:var(--bg);color:var(--t1);overflow-x:hidden;line-height:1.6;font-family:var(--sans)}
-a{color:inherit;text-decoration:none}
-img{display:block;width:100%;height:100%;object-fit:cover}
+  <!-- Style Sheets -->
+  <link rel="stylesheet" href="css/style.css">
 
-/* ---- NAV ---- */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px var(--g);transition:background .4s,backdrop-filter .4s}
-nav.stuck{background:rgba(8,8,8,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:16px var(--g);border-bottom:1px solid var(--border)}
-.brand{font-family:var(--serif);font-size:1.1rem;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:var(--t1)}
-.brand-sub{font-family:var(--sans);font-size:.55rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-top:2px}
-.nav-links{display:flex;gap:32px;list-style:none}
-.nav-links a{font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);transition:color .3s;position:relative}
-.nav-links a:hover{color:var(--t1)}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .4s}
-.nav-links a:hover::after{width:100%}
-.nav-cta{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:11px 22px;border:none;cursor:pointer;font-family:var(--sans);font-weight:600;transition:all .3s}
-.nav-cta:hover{background:transparent;color:var(--accent);outline:1px solid var(--accent)}
-.menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px}
-.menu-btn span{display:block;width:24px;height:1.5px;background:var(--t1);transition:all .3s}
-.menu-btn.open span:first-child{transform:translateY(6.5px) rotate(45deg)}
-.menu-btn.open span:nth-child(2){opacity:0}
-.menu-btn.open span:last-child{transform:translateY(-6.5px) rotate(-45deg)}
-@media(max-width:768px){.nav-links,.nav-cta{display:none}.menu-btn{display:flex}}
-
-.mobile-menu{position:fixed;inset:0;z-index:99;background:rgba(8,8,8,.96);backdrop-filter:blur(24px);flex-direction:column;justify-content:center;align-items:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .4s}
-.mobile-menu.open{opacity:1;pointer-events:auto}
-.mobile-menu a{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--t2);transition:color .3s}
-.mobile-menu a:hover{color:var(--t1)}
-
-/* ---- HERO ---- */
-.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:flex-end;overflow:hidden}
-.hero-bg{position:absolute;inset:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35) contrast(1.1)}
-.hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.8) 45%,rgba(8,8,8,.6) 100%)}
-.hero-content{position:relative;z-index:2;width:100%;padding:0 var(--g) clamp(40px,8vh,80px)}
-.hero-tag{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:block}
-.hero h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.2rem,6vw,5rem);line-height:1.08;letter-spacing:-1px;max-width:800px;margin-bottom:28px;color:var(--t1)}
-.hero h1 em{font-style:italic;color:var(--accent)}
-.hero-desc{font-size:.88rem;font-weight:300;color:var(--t2);max-width:440px;line-height:1.7;margin-bottom:32px}
-.hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;border-top:1px solid var(--border);padding-top:20px}
-@media(max-width:640px){.hero-meta{grid-template-columns:repeat(2,1fr);gap:16px}}
-.hero-meta dt{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
-.hero-meta dd{font-size:.82rem;color:var(--t2);font-weight:300}
-
-/* ---- SECTION ---- */
-section{padding:clamp(60px,10vh,120px) 0}
-.container{max-width:1300px;margin:0 auto;padding:0 var(--g)}
-.section-label{font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:32px}
-
-/* ---- MANIFESTO ---- */
-.manifesto{border-top:1px solid var(--border)}
-.manifesto-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px);align-items:start}
-@media(max-width:768px){.manifesto-grid{grid-template-columns:1fr;gap:32px}}
-.manifesto h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1.15;letter-spacing:-0.3px}
-.manifesto p{font-size:.88rem;font-weight:300;color:var(--t2);line-height:1.8;margin-bottom:16px}
-
-/* ---- MATERIALS ---- */
-.materials{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
-@media(max-width:768px){.materials{grid-template-columns:repeat(2,1fr)}}
-.mat-card{background:var(--surface);border:1px solid var(--border);padding:20px;transition:border-color .3s,transform .3s}
-.mat-card:hover{border-color:var(--accent);transform:translateY(-3px)}
-.mat-num{font-size:.55rem;letter-spacing:2px;color:var(--accent);display:block;margin-bottom:10px}
-.mat-card h3{font-family:var(--serif);font-size:.9rem;font-weight:400;margin-bottom:6px}
-.mat-card p{font-size:.7rem;color:var(--t3);line-height:1.5}
-
-/* ---- PORTFOLIO ---- */
-.portfolio{border-top:1px solid var(--border)}
-.portfolio-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:40px}
-.portfolio-head h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3.5vw,2.8rem)}
-.filters{display:flex;gap:6px;flex-wrap:wrap}
-.filters button{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--t3);padding:8px 14px;cursor:pointer;font-family:var(--sans);transition:all .3s}
-.filters button:hover{color:var(--t2);border-color:rgba(255,255,255,.12)}
-.filters button.on{color:var(--bg);background:var(--accent);border-color:var(--accent)}
-.project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2.5vw,32px)}
-.proj{grid-column:span 6;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:border-color .4s,transform .4s}
-.proj:hover{border-color:rgba(201,185,154,.3);transform:translateY(-4px)}
-.proj.wide{grid-column:span 12}
-@media(max-width:768px){.proj,.proj.wide{grid-column:span 12}}
-.proj-img{aspect-ratio:16/10;overflow:hidden;background:#111}
-.proj.wide .proj-img{aspect-ratio:21/9}
-.proj-img img{transition:transform 1s cubic-bezier(.16,1,.3,1)}
-.proj:hover .proj-img img{transform:scale(1.05)}
-.proj-body{padding:20px 24px;border-top:1px solid var(--border)}
-.proj-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-.proj-head h3{font-family:var(--serif);font-size:1.05rem;font-weight:400}
-.proj-year{font-size:.65rem;color:var(--accent)}
-.proj-sub{font-size:.78rem;color:var(--t2);margin-bottom:10px}
-.proj-link{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);transition:letter-spacing .3s}
-.proj:hover .proj-link{letter-spacing:3px}
-
-/* ---- PRINCIPAL ---- */
-.principal{border-top:1px solid var(--border)}
-.principal-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,80px);align-items:center}
-@media(max-width:768px){.principal-grid{grid-template-columns:1fr;gap:32px}}
-.principal-img{aspect-ratio:4/5;overflow:hidden;border:1px solid var(--border)}
-.principal-img img{filter:grayscale(1) contrast(1.1) brightness(.9);transition:filter .8s}
-.principal-img:hover img{filter:grayscale(0) contrast(1) brightness(1)}
-.principal h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:6px}
-.principal-role{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:28px}
-.principal p{font-size:.88rem;font-weight:300;color:var(--t2);line-height:1.8;margin-bottom:14px}
-.creds{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-top:1px solid var(--border);padding-top:24px;margin-top:24px;list-style:none}
-.creds span{display:block;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:2px}
-.creds li{font-size:.78rem;color:var(--t1)}
-
-/* ---- OVERLAY ---- */
-.overlay{position:fixed;inset:0;z-index:200;background:rgba(8,8,8,.96);backdrop-filter:blur(24px);overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .5s}
-.overlay.open{opacity:1;pointer-events:auto}
-.overlay-inner{max-width:1100px;margin:0 auto;padding:clamp(24px,5vw,64px)}
-.overlay-close{position:sticky;top:0;float:right;background:var(--surface);border:1px solid var(--border);color:var(--t1);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:background .3s,transform .3s}
-.overlay-close:hover{background:var(--accent);color:var(--bg);transform:rotate(90deg)}
-.overlay-meta{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block;clear:both}
-.overlay h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,4vw,3rem);margin-bottom:8px;line-height:1.1}
-.overlay-sub{font-size:.9rem;color:var(--t2);margin-bottom:32px;max-width:700px}
-.overlay-desc{font-size:.88rem;color:var(--t2);line-height:1.8;margin-bottom:36px;max-width:700px}
-.overlay-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:36px}
-@media(max-width:640px){.overlay-gallery{grid-template-columns:1fr}}
-.overlay-gallery img{aspect-ratio:16/11;border:1px solid var(--border)}
-.specs-table{width:100%;border-collapse:collapse;margin-bottom:36px}
-.specs-table tr{border-bottom:1px solid var(--border)}
-.specs-table th{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);text-align:left;padding:12px 0;width:30%;font-weight:400}
-.specs-table td{font-size:.82rem;color:var(--t1);padding:12px 0;font-weight:300}
-
-/* ---- CONTACT ---- */
-.contact{border-top:1px solid var(--border)}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px)}
-@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
-.contact h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:16px}
-.contact p{font-size:.88rem;font-weight:300;color:var(--t2);line-height:1.7;margin-bottom:24px}
-.field{margin-bottom:20px}
-.field label{display:block;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--t1);padding:12px 14px;font-family:var(--sans);font-size:.85rem;transition:border-color .3s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
-.field textarea{resize:vertical;min-height:100px}
-.submit-btn{width:100%;padding:14px;background:var(--accent);color:var(--bg);border:none;font-family:var(--sans);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500;transition:background .3s,color .3s}
-.submit-btn:hover{background:transparent;color:var(--accent);outline:1px solid var(--accent)}
-
-/* ---- FOOTER ---- */
-footer{border-top:1px solid var(--border);padding:clamp(40px,6vh,60px) 0 clamp(20px,3vh,32px)}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
-@media(max-width:768px){.foot-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.foot-grid{grid-template-columns:1fr}}
-.foot-col h4{font-size:.55rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:400}
-.foot-col li{font-size:.78rem;color:var(--t3);list-style:none;margin-bottom:8px;line-height:1.5}
-.foot-col a:hover{color:var(--t1)}
-.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--border);padding-top:32px;font-size:.6rem;color:var(--t3);letter-spacing:1px}
-
-@keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0}100%{transform:scale(1);opacity:1}}
-
-/* --- Custom Circle Cursor --- */
-#cursor-circle{position:fixed;width:40px;height:40px;pointer-events:none;top:var(--mouse-y,0);left:var(--mouse-x,0);transform:translate(-50%,-50%);z-index:9999}
-#cursor-circle .cursor-inner{width:40px;height:40px;border:2px solid var(--accent);border-radius:50%;transition:width .3s,height .3s,background .3s}
-#cursor-circle .cursor-inner:hover{width:80px;height:80px;background:var(--accent)}
-#cursor-circle .cursor-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--bg);white-space:nowrap;pointer-events:none;transition:opacity .2s}
-#cursor-circle .cursor-text.visible{opacity:1}
-#cursor-circle.active .cursor-inner{background:var(--accent);width:80px;height:80px;border:none}
-
-/* ---- Hover states ---- */
-.proj:hover,#cursor-circle.active{cursor:none}
-#cursor-circle:hover .cursor-text{opacity:1}
-
-/* ---- Reduce motion ---- */
-@media(max-reduce:reduce){#cursor-circle{display:none}}
-</style>
+  <!-- CDN Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 </head>
 <body>
-<div id="cursor-circle">
-  <div class="cursor-inner"></div>
-  <div class="cursor-text"></div>
-</div>
 
-<!-- WebGL Background Canvas -->
-<canvas id="webgl-canvas"></canvas>
+  <!-- WebGL Background Canvas -->
+  <canvas id="webgl-canvas"></canvas>
 
-<!-- Noise Overlay -->
-<div class="noise-overlay"></div>
+  <!-- Tactile Noise Grain Overlay -->
+  <div class="noise-overlay"></div>
 
-<!-- Scroll Progress -->
-<div class="scroll-progress"></div>
-
-<!-- Skip Link -->
-<a href="#portfolio" class="skip-link">Pular para o conteúdo</a>
-
-<nav id="nav">
-  <a href="#" class="brand">Mass Arquitetura<span class="brand-sub">São Paulo // Nova York</span></a>
-  <ul class="nav-links">
-    <li><a href="#portfolio">Projetos</a></li>
-    <li><a href="#manifesto">Manifesto</a></li>
-    <li><a href="#sobre">Escritório</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-  <button class="nav-cta" onclick="document.getElementById('contato').scrollIntoView({behavior:'smooth'})">Iniciar Projeto</button>
-  <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#portfolio" class="mob-link">Projetos</a>
-  <a href="#manifesto" class="mob-link">Manifesto</a>
-  <a href="#sobre" class="mob-link">Escritório</a>
-  <a href="#contato" class="mob-link">Contato</a>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"><img src="mass_arquitetura/images/DVQ70yhEYC3.jpg" alt="Mass Arquitetura"></div>
-  <div class="hero-vignette"></div>
-  <div class="hero-content">
-    <span class="hero-tag">LAT -23.5505° // LON -46.6333° — SP // NY</span>
-    <h1>A arquitetura como <em>diálogo</em> entre luz, material e espaço.</h1>
-    <p class="hero-desc">Residências, escritórios e espaços comerciais projetados com precisão construtiva e sensibilidade ambiental. Atuação global no eixo São Paulo e Nova York.</p>
-    <dl class="hero-meta">
-      <div><dt>Escritório</dt><dd>SP // NY</dd></div>
-      <div><dt>Fundador</dt><dd>Gustavo Massimino</dd></div>
-      <div><dt>Acadêmico</dt><dd>M.Arch FAU-USP</dd></div>
-      <div><dt>Registro</dt><dd>CAU/SP #A38491</dd></div>
-    </dl>
+  <!-- Custom Magnetic Cursor -->
+  <div id="custom-cursor">
+    <span class="cursor-text"></span>
   </div>
-</section>
 
-<!-- QUOTE BREAK -->
-<div class="quote-section">
-  <p class="quote-text">"A arquitetura acontece quando ela atende aos seus objetivos e organiza suas partes num todo coerente."</p>
-</div>
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress"></div>
 
-<!-- MANIFESTO -->
-<section class="manifesto" id="manifesto">
-  <div class="container">
-    <span class="section-label">[01] Manifesto Tectônico</span>
-    <div class="manifesto-grid">
-      <h2>Cada volume responde à luz, ao terreno e ao uso.</h2>
-      <div>
-        <p>Trabalhamos com materiais que envelhecem bem: concreto aparente, madeira bruta, aço estrutural e vidro. Sem tendências efêmeras — apenas o que funciona e permanece.</p>
-        <p>Cada projeto começa pela leitura do terreno. Orientação solar, vento, vegetation, vista. O partido nasce da resposta a essas condições — não de um estilo pré-definido.</p>
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <a href="#" class="brand-logo">
+      <span class="brand-name">Mass Arquitetura</span>
+      <span class="brand-tagline">São Paulo // New York</span>
+    </a>
+
+    <ul class="nav-center">
+      <li><a href="#portfolio" class="nav-link">Monographs</a></li>
+      <li><a href="#manifesto" class="nav-link">Tectonics</a></li>
+      <li><a href="#principal" class="nav-link">Principal</a></li>
+      <li><a href="#contact" class="nav-link">Studio</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="btn-cta trigger-consultation">Commission Project</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <a href="#portfolio" class="mobile-nav-link">Monographs</a>
+    <a href="#manifesto" class="mobile-nav-link">Tectonics</a>
+    <a href="#principal" class="mobile-nav-link">Principal</a>
+    <a href="#contact" class="mobile-nav-link">Studio</a>
+    <button class="btn-cta trigger-consultation" style="margin-top: 20px;">Commission Project</button>
+  </div>
+
+  <!-- Main Content Wrapper -->
+  <main>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-bg-container">
+        <img src="mass_arquitetura/images/DVQ70yhEYC3.jpg" alt="Mass Arquitetura Architecture Monograph" class="hero-bg-image"/>
+        <div class="hero-vignette"></div>
       </div>
-    </div>
-    <div class="materials">
-      <div class="mat-card"><span class="mat-num">01</span><h3>Concreto Aparente</h3><p>Massa monolítica com textura de fôrma exposta e alta inércia térmica.</p></div>
-      <div class="mat-card"><span class="mat-num">02</span><h3>Madeira Laminada</h3><p>Vigas de MLC estrutural com vãos livres e calor tátil.</p></div>
-      <div class="mat-card"><span class="mat-num">03</span><h3>Pele de Vidro</h3><p>Caixilharias Low-E de piso ao teto que desaparecem na alvenaria.</p></div>
-      <div class="mat-card"><span class="mat-num">04</span><h3>Aço Anodizado</h3><p>Sistemas modulares para ritmo construtivo e flexibilidade.</p></div>
-    </div>
-  </div>
-</section>
 
-<!-- PORTFOLIO -->
-<section class="portfolio" id="portfolio">
-  <div class="container">
-    <div class="portfolio-head">
-      <h2>Monografias Selecionadas</h2>
-      <div class="filters">
-        <button class="on" data-f="all">Todos</button>
-        <button data-f="residencial">Residencial</button>
-        <button data-f="corporativo">Corporativo</button>
-        <button data-f="estudo">Estudos</button>
-      </div>
-    </div>
-    <div class="project-grid" id="projectGrid">
-      <article class="proj wide" data-cat="residencial" data-id="parnaiba">
-        <div class="proj-img"><img src="mass_arquitetura/images/DVQ70yhEYC3.jpg" alt="Residência Santana de Parnaíba" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Residência Santana de Parnaíba</h3><span class="proj-year">2013</span></div><p class="proj-sub">850 m² — Pátio Monolítico</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj" data-cat="residencial" data-id="quiririm">
-        <div class="proj-img"><img src="mass_arquitetura/images/DVyQa7XkaZf.jpg" alt="Residência em Quiririm" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Residência em Quiririm</h3><span class="proj-year">2016</span></div><p class="proj-sub">380 m² — Estrutura Metálica 4x4m</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj" data-cat="residencial" data-id="ipojuca">
-        <div class="proj-img"><img src="mass_arquitetura/images/DUvlV_IkSed_0.jpg" alt="Residência Vila Ipojuca" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Residência Vila Ipojuca</h3><span class="proj-year">2014</span></div><p class="proj-sub">310 m² — Lote Estreito 6x30m</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj" data-cat="corporativo" data-id="corporativo">
-        <div class="proj-img"><img src="mass_arquitetura/images/DVGvRGAEZr1_0.jpg" alt="Espaço Comercial" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Espaço Comercial & Corporativo</h3><span class="proj-year">2013</span></div><p class="proj-sub">450 m² — Retrofit Pele de Vidro</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj" data-cat="estudo" data-id="sc">
-        <div class="proj-img"><img src="mass_arquitetura/images/DVMDgyrEaGv_0.jpg" alt="Estudo SC" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Estudo Residência Santa Catarina</h3><span class="proj-year">2025</span></div><p class="proj-sub">620 m² — MLC & Concreto</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj" data-cat="residencial" data-id="perdizes">
-        <div class="proj-img"><img src="mass_arquitetura/images/DUsue6ykRFj_0.jpg" alt="Reforma Perdizes" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Reforma Apartamento Perdizes</h3><span class="proj-year">2025</span></div><p class="proj-sub">240 m² — Marcenaria em Ipê</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-      <article class="proj wide" data-cat="residencial" data-id="parnaiba2">
-        <div class="proj-img"><img src="mass_arquitetura/images/DUqNMjcEQd9_0.jpg" alt="Residência Santana de Parnaíba" loading="lazy"></div>
-        <div class="proj-body"><div class="proj-head"><h3>Residência Santana de Parnaíba</h3><span class="proj-year">2013</span></div><p class="proj-sub">850 m² — Dois Pavimentos</p><span class="proj-link">Ver Monografia &rarr;</span></div>
-      </article>
-    </div>
-  </div>
-</section>
+      <div class="container hero-content">
+        <span class="hero-meta-badge">LAT -23.5505° S // LON 46.6333° W — SP // NY</span>
+        
+        <h1 class="hero-title">
+          Architecture as a <em>tectonic dialogue</em> between monolithic precision and natural light.
+        </h1>
 
-<!-- PRINCIPAL -->
-<section class="principal" id="sobre">
-  <div class="container">
-    <span class="section-label">[03] Escritório & Liderança</span>
-    <div class="principal-grid">
-      <div class="principal-img"><img src="mass_arquitetura/images/DVi51HLjf8P_0.jpg" alt="Gustavo Massimino"></div>
-      <div>
-        <h2>Gustavo Massimino</h2>
-        <span class="principal-role">Fundador & Mestre em Arquitetura</span>
-        <p>Mestrado em Projeto de Arquitetura pela FAU-USP. Pós-graduação em Gestão de Projetos pela BSP.</p>
-        <p>Colaborou com Roberto Migotto, Studio Galvez De Vitto e Piratininga Arquitetos Associados. Fundou a Mass Arquitetura em 2009. Coordenador Regional do CAU/SP.</p>
-        <ul class="creds">
-          <li><span>Acadêmico</span>M.Arch FAU-USP (2018) // B.Arch UNITAU (1998)</li>
-          <li><span>Pós-Graduação</span>Gestão de Projetos BSP (2017)</li>
-          <li><span>Institucional</span>Coordenador Regional CAU/SP</li>
-          <li><span>Prática</span>Mass Arquitetura — Fundada em 2009</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+        <div class="hero-sub-grid">
+          <p class="hero-manifesto-excerpt">
+            From São Paulo’s tropical brutalism to Manhattan’s vertical sophistication, Mass Arquitetura crafts spatial monographs for visionary private clients and developers worldwide.
+          </p>
 
-<!-- CONTACT -->
-<section class="contact" id="contato">
-  <div class="container">
-    <span class="section-label">[04] Contato</span>
-    <div class="contact-grid">
-      <div>
-        <h2>Inicie um projeto</h2>
-        <p>Entre em contato para uma consulta reservada.</p>
-        <div class="contact-addr">
-          <h4>São Paulo</h4>
-          <p>Av. Brig. Faria Lima, Jardins<br>São Paulo, SP — Brasil<br>+55 11 98122-3000</p>
-        </div>
-        <div class="contact-addr">
-          <h4>Nova York</h4>
-          <p>Madison Avenue, Manhattan<br>New York, NY — EUA<br>ny@massarquitetura.com</p>
+          <div class="hero-specs-strip">
+            <div class="spec-item">
+              <span class="spec-label">Practice</span>
+              <span class="spec-val">SP // NY Global Axis</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Principal</span>
+              <span class="spec-val">Gustavo Massimino</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Academic</span>
+              <span class="spec-val">M.Arch FAU-USP</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Accreditation</span>
+              <span class="spec-val">CAU/SP #A38491</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div>
-        <form onsubmit="event.preventDefault();alert('Obrigado. Entraremos em contato em até 24 horas.');this.reset()">
-          <div class="field"><label>Nome Completo</label><input type="text" required></div>
-          <div class="field"><label>E-mail</label><input type="email" required></div>
-          <div class="field"><label>Localização do Projeto</label><select><option>São Paulo / SP</option><option>Nova York / NY</option><option>Interior / Litoral</option><option>Internacional</option></select></div>
-          <div class="field"><label>Briefing</label><textarea rows="4" placeholder="Descreva suas necessidades..."></textarea></div>
-          <button type="submit" class="submit-btn">Enviar Inquérito Confidencial</button>
-        </form>
+    </section>
+
+    <!-- Manifesto & Materiality Section -->
+    <section class="manifesto-section" id="manifesto">
+      <div class="container">
+        <span class="section-label">[01] Tectonic Manifesto & Materiality</span>
+        
+        <div class="manifesto-grid">
+          <h2 class="manifesto-heading">
+            A coherent tectonic whole is born from purpose, light, and materiality.
+          </h2>
+
+          <div class="manifesto-body">
+            <p>
+              Under the leadership of Gustavo Massimino, Mass Arquitetura operates at the intersection of theoretical rigor and construction precision. Every volume, structural joint, and window aperture responds to site-specific environmental geometry.
+            </p>
+            <p>
+              We reject transient stylistic trends in favor of timeless materials: fair-faced concrete, raw timber, structural steel, and glass planes that dissolve spatial boundaries.
+            </p>
+          </div>
+        </div>
+
+        <!-- Materiality Interactive Strip -->
+        <div class="materials-strip">
+          <div class="material-card active">
+            <span class="material-num">MAT.01</span>
+            <h3 class="material-title">Fair-Faced Concrete</h3>
+            <p class="material-desc">Monolithic structural mass with high thermal inertia and exposed formwork texture.</p>
+          </div>
+          <div class="material-card">
+            <span class="material-num">MAT.02</span>
+            <h3 class="material-title">Glulam Timber</h3>
+            <p class="material-desc">Engineered glue-laminated timber beams offering sustainable spans and tactile warmth.</p>
+          </div>
+          <div class="material-card">
+            <span class="material-num">MAT.03</span>
+            <h3 class="material-title">Structural Glazing</h3>
+            <p class="material-desc">Low-E floor-to-ceiling glass pockets that disappear into masonry walls.</p>
+          </div>
+          <div class="material-card">
+            <span class="material-num">MAT.04</span>
+            <h3 class="material-title">Anodized Steel</h3>
+            <p class="material-desc">Modular structural framing systems engineered for construction speed and spatial flexibility.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section (Monograph Grid) -->
+    <section class="portfolio-section" id="portfolio">
+      <div class="container">
+        <div class="portfolio-header">
+          <div class="portfolio-title-group">
+            <span class="section-label">[02] Architectural Portfolio</span>
+            <h2>Selected Monographs</h2>
+          </div>
+
+          <!-- Interactive Filter Engine -->
+          <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="residential">Residential</button>
+            <button class="filter-btn" data-filter="corporate">Corporate & Retrofit</button>
+            <button class="filter-btn" data-filter="concepts">Concepts & Competitions</button>
+          </div>
+        </div>
+
+        <!-- Asymmetric Swiss Grid -->
+        <div class="monograph-grid">
+
+          <!-- Project 01: Santana de Parnaíba (Span 8) -->
+          <article class="monograph-card span-8" data-category="residential" data-monograph="parnaiba">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">Residential Monograph</span>
+              <img src="mass_arquitetura/images/DVQ70yhEYC3.jpg" alt="Residência Santana de Parnaíba" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Residência Santana de Parnaíba</h3>
+                <span class="card-year">2013</span>
+              </div>
+              <p class="card-subtitle">Santana de Parnaíba, SP — Monolithic Courtyard & Pocket Glazing Systems</p>
+              <div class="card-specs-row">
+                <span><span>AREA:</span> 850 m²</span>
+                <span><span>SPECS:</span> 5 Suítes / Concreto Protendido</span>
+                <span><span>PHOTO:</span> Ana Mello</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Project 02: Quiririm (Span 4) -->
+          <article class="monograph-card span-4" data-category="residential" data-monograph="quiririm">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">Steel Frame</span>
+              <img src="mass_arquitetura/images/DVyQa7XkaZf.jpg" alt="Residência em Quiririm" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Residência em Quiririm</h3>
+                <span class="card-year">2016</span>
+              </div>
+              <p class="card-subtitle">Taubaté, SP — 4x4m Modular Steel Frame at Mantiqueira Foothills</p>
+              <div class="card-specs-row">
+                <span><span>AREA:</span> 380 m²</span>
+                <span><span>SPECS:</span> Modulação 4x4m</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Project 03: Santa Catarina (Span 6) -->
+          <article class="monograph-card span-6" data-category="concepts" data-monograph="sc">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">Concepts & Competitions</span>
+              <img src="mass_arquitetura/images/DVMDgyrEaGv_0.jpg" alt="Estudo Residência Santa Catarina" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Estudo Residência Santa Catarina</h3>
+                <span class="card-year">2025</span>
+              </div>
+              <p class="card-subtitle">Governador Celso Ramos, SC — Oceanfront Glulam & Concrete Architecture</p>
+              <div class="card-specs-row">
+                <span><span>AREA:</span> 620 m²</span>
+                <span><span>3D:</span> Studio Lion 3D</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Project 04: Espaço Corporativo Jardins (Span 6) -->
+          <article class="monograph-card span-6" data-category="corporate" data-monograph="corporativo">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">Corporate Retrofit</span>
+              <img src="mass_arquitetura/images/DVGvRGAEZr1_0.jpg" alt="Espaço Comercial Jardins" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Espaço Comercial & Corporativo</h3>
+                <span class="card-year">2013</span>
+              </div>
+              <p class="card-subtitle">Jardins, São Paulo, SP — Structural Glazing Retrofit & Open Courtyard</p>
+              <div class="card-specs-row">
+                <span><span>AREA:</span> 450 m²</span>
+                <span><span>PHOTO:</span> Pedro Coltro</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Project 05: Vila Ipojuca (Span 4) -->
+          <article class="monograph-card span-4" data-category="residential" data-monograph="ipojuca">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">Urban Infill</span>
+              <img src="mass_arquitetura/images/DUvlV_IkSed_0.jpg" alt="Residência Vila Ipojuca" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Residência Vila Ipojuca</h3>
+                <span class="card-year">2014</span>
+              </div>
+              <p class="card-subtitle">São Paulo, SP — Narrow Lot Topographical Split-Levels</p>
+              <div class="card-specs-row">
+                <span><span>LOT:</span> 6x30m</span>
+                <span><span>SPECS:</span> Topografia em Aclive</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+          <!-- Project 06: Reforma Perdizes (Span 8) -->
+          <article class="monograph-card span-8" data-category="residential" data-monograph="perdizes">
+            <div class="card-media-wrapper">
+              <span class="card-category-tag">High Interior Architecture</span>
+              <img src="mass_arquitetura/images/DUsue6ykRFj_0.jpg" alt="Reforma Apartamento Perdizes" class="card-img" loading="lazy"/>
+            </div>
+            <div class="card-info">
+              <div class="card-header-line">
+                <h3 class="card-title">Reforma Apartamento Perdizes</h3>
+                <span class="card-year">2025</span>
+              </div>
+              <p class="card-subtitle">Perdizes, São Paulo, SP — Ipê Solid Wood Joinery & Tactile Stone</p>
+              <div class="card-specs-row">
+                <span><span>AREA:</span> 240 m²</span>
+                <span><span>LIGHTING:</span> LABLUZ</span>
+                <span><span>3D:</span> Studio Lion 3D</span>
+              </div>
+              <span class="card-action-link">Explore Monograph &rarr;</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Principal Section -->
+    <section class="principal-section" id="principal">
+      <div class="container">
+        <span class="section-label">[03] Leadership & Academic Rigor</span>
+        
+        <div class="principal-grid">
+          <div class="principal-portrait-wrapper">
+            <img src="mass_arquitetura/images/DVi51HLjf8P_0.jpg" alt="Gustavo Massimino — Founding Principal"/>
+          </div>
+
+          <div class="principal-details">
+            <h2>Gustavo Massimino</h2>
+            <span class="principal-title">Founding Principal & Master of Architecture (M.Arch)</span>
+
+            <p class="principal-bio">
+              With a Master’s Degree in Architectural Design from the prestigious Faculty of Architecture and Urbanism at the University of São Paulo (FAU-USP) and post-graduate studies in Project Management at Business School São Paulo (BSP), Gustavo Massimino combines theoretical depth with rigorous execution.
+            </p>
+            <p class="principal-bio">
+              Having collaborated with leading Brazilian design studios including Roberto Migotto, Studio Galvez De Vitto, Piratininga Arquitetos Associados, and Miguel Góes, Gustavo founded Mass Arquitetura in 2009. He served as Regional Director for CAU/SP and has taught architectural design at university level.
+            </p>
+
+            <ul class="credentials-list">
+              <li>
+                <span>ACADEMIC</span>
+                M.Arch FAU-USP (2018) // B.Arch UNITAU (1998)
+              </li>
+              <li>
+                <span>POST-GRADUATE</span>
+                Project Management BSP (2017)
+              </li>
+              <li>
+                <span>INSTITUTIONAL</span>
+                Regional Director CAU/SP
+              </li>
+              <li>
+                <span>PRACTICE</span>
+                Mass Arquitetura Founded 2009
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Monograph Drawer (Modal) -->
+  <div class="monograph-modal" id="monograph-modal" aria-hidden="true">
+    <div class="modal-content-container">
+      <button class="modal-close-btn" aria-label="Close Monograph">&times;</button>
+
+      <span class="modal-header-meta" id="modal-meta">São Paulo // 2013</span>
+      <h2 class="modal-title" id="modal-title">Residência Santana de Parnaíba</h2>
+      <p class="modal-subtitle" id="modal-subtitle">Monolithic Courtyard Residence with Integrated Solar Orientation</p>
+
+      <!-- Modal Tabs -->
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="desc">[01] Architectural Overview</button>
+        <button class="tab-btn" data-tab="gallery">[02] Photography Gallery</button>
+        <button class="tab-btn" data-tab="specs">[03] Specifications & Suppliers</button>
+        <button class="tab-btn" data-tab="blueprint">[04] Interactive Blueprint</button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="tab-panel active" id="tab-panel-desc">
+        <div id="modal-tab-desc"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-panel-gallery">
+        <div class="modal-gallery-grid" id="modal-gallery-grid"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-panel-specs">
+        <table class="specs-table">
+          <tbody id="modal-specs-table"></tbody>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="tab-panel-blueprint">
+        <div class="blueprint-container">
+          <div class="blueprint-header">
+            <span class="blueprint-title">INTERACTIVE BLUEPRINT & TECTONIC SCHEMATIC</span>
+            <span style="font-family: var(--font-mono); font-size: 0.6rem; color: #48cae4;">SCALE 1:100</span>
+          </div>
+          <div class="blueprint-svg-wrapper" id="modal-blueprint-svg"></div>
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-col">
-        <h4>Mass Arquitetura</h4>
-        <li style="list-style:none;font-size:.82rem;color:var(--t3);line-height:1.7;max-width:300px">Arquitetura de alto padrão. São Paulo e Nova York.</li>
+  <!-- Private Consultation Modal -->
+  <div class="consultation-modal" id="consultation-modal" aria-hidden="true">
+    <div class="consultation-card">
+      <button class="modal-close-btn" id="close-consultation-btn" style="position: absolute; top: 20px; right: 20px;">&times;</button>
+      
+      <span class="section-label">[PRIVATE COMMISSION INQUIRY]</span>
+      <h2 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 24px; text-transform: uppercase;">Commission a Project</h2>
+
+      <form id="consultation-form">
+        <div class="form-group">
+          <label class="form-label" for="clientName">Full Name / Development Entity</label>
+          <input type="text" id="clientName" class="form-input" placeholder="e.g. Victor K. / Apex Capital" required/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="clientEmail">Direct Email Address</label>
+          <input type="email" id="clientEmail" class="form-input" placeholder="e.g. v.klein@apex-dev.com" required/>
+        </div>
+
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="form-label" for="projectLoc">Location</label>
+            <select id="projectLoc" class="form-select">
+              <option value="sp">São Paulo / SP Region</option>
+              <option value="ny">New York / NY Metro</option>
+              <option value="coast">Interior / Litoral (BR)</option>
+              <option value="intl">International (US / EU / LatAm)</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="projectBudget">Investment Range</label>
+            <select id="projectBudget" class="form-select">
+              <option value="1m-5m">US$ 1,000,000 – US$ 5,000,000</option>
+              <option value="5m-15m">US$ 5,000,000 – US$ 15,000,000</option>
+              <option value="15m+">US$ 15,000,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="projectDetails">Project Brief & Vision</label>
+          <textarea id="projectDetails" class="form-textarea" rows="4" placeholder="Describe the lot dimensions, architectural requirements, or development scope..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-cta" style="width: 100%; text-align: center; margin-top: 12px;">Submit Confidential Inquiry</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <span class="brand-name" style="font-size: 1.4rem;">Mass Arquitetura</span>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 12px; max-width: 380px; line-height: 1.7;">
+            High-end architectural studio based in São Paulo and New York. Specializing in luxury residential monographs, commercial retrofits, and master planning.
+          </p>
+        </div>
+
+        <div>
+          <span class="footer-col-title">São Paulo Studio</span>
+          <ul class="footer-links">
+            <li>Av. Brig. Faria Lima, Jardins</li>
+            <li>São Paulo, SP — Brasil</li>
+            <li>+55 11 98122-3000</li>
+          </ul>
+        </div>
+
+        <div>
+          <span class="footer-col-title">New York Studio</span>
+          <ul class="footer-links">
+            <li>Madison Avenue, Manhattan</li>
+            <li>New York, NY — USA</li>
+            <li>ny@massarquitetura.com</li>
+          </ul>
+        </div>
+
+        <div>
+          <span class="footer-col-title">Digital & Social</span>
+          <ul class="footer-links">
+            <li><a href="https://instagram.com/mass_arquitetura" target="_blank" rel="noopener">@mass_arquitetura</a></li>
+            <li><a href="https://archdaily.com.br" target="_blank" rel="noopener">ArchDaily Publications</a></li>
+            <li><a href="#principal">Academic Papers (FAU-USP)</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="foot-col"><h4>Navegação</h4><li><a href="#portfolio">Projetos</a></li><li><a href="#manifesto">Manifesto</a></li><li><a href="#sobre">Escritório</a></li><li><a href="#contato">Contato</a></li></div>
-      <div class="foot-col"><h4>Social</h4><li><a href="https://instagram.com/mass_arquitetura" target="_blank">@mass_arquitetura</a></li><li><a href="https://archdaily.com.br" target="_blank">ArchDaily</a></li></div>
-      <div class="foot-col"><h4>Legal</h4><li>CAU/SP #A38491</li><li>Gustavo Massimino</li></div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Mass Arquitetura. Gustavo Massimino (CAU/SP #A38491). All Rights Reserved.</span>
+        <span>Awwwards / FWA Standard Experience (US$ 100k+ Agency Standard)</span>
+      </div>
     </div>
-    <div class="foot-bottom">
-      <span>&copy; 2026 Mass Arquitetura. Todos os direitos reservados.</span>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<!-- Project Overlay -->
-<div class="overlay" id="overlay">
-  <div class="overlay-inner">
-    <button class="overlay-close" onclick="closeOverlay()">&times;</button>
-    <span class="overlay-meta" id="ov-meta"></span>
-    <h2 id="ov-title"></h2>
-    <p class="overlay-sub" id="ov-sub"></p>
-    <p class="overlay-desc" id="ov-desc"></p>
-    <div class="overlay-gallery" id="ov-gallery"></div>
-    <table class="specs-table"><tbody id="ov-specs"></tbody></table>
-  </div>
-</div>
-
-<script>
-// PROJECT DATA with all specs
-const data={
-  parnaiba:{title:'Residência Santana de Parnaíba',sub:'Santana de Parnaíba, SP — 850 m² — Pátio Monolítico com Orientação Solar Norte',year:'2013',loc:'Santana de Parnaíba, SP',area:'850 m²',
-    desc:'Dois pavimentos com orientação norte privilegiada. Caixilhos de piso ao teto recolhem-se nas alvenarias, transformando o living em uma varanda aberta com controle térmico e luz abundante.',
-    imgs:['mass_arquitetura/images/DVQ70yhEYC3.jpg','mass_arquitetura/images/DVdjhKBDVM2.jpg','mass_arquitetura/images/DVbIwduDZhl.jpg','mass_arquitetura/images/DVYdH4bEeDT_0.jpg'],
-    specs:[['Estrutura','Concreto Armado Protendido'],['Caixilharia','Alumínio Anodizado — JMar Esquadrias'],['Materialidade','Lambri de Ipê, Cerâmica Portobello'],['Mobiliário','Tora Brasil, Carlos Motta, Empório Beraldin'],['Iluminação','LABLUZ / Goe Light'],['Fotografia','Ana Mello'],['Paisagismo','Daniela Ramalho']]},
-  quiririm:{title:'Residência em Quiririm',sub:'Taubaté, SP — 380 m² — Estrutura Metálica Modular 4x4m na Mantiqueira',year:'2016',loc:'Taubaté, SP',area:'380 m²',
-    desc:'Lote de 12x26m aos pés da Serra da Mantiqueira. Estrutura metálica modular 4x4m com volumes diferenciados para social e íntimo.',
-    imgs:['mass_arquitetura/images/DVyQa7XkaZf.jpg'],
-    specs:[['Estrutura','Aço Laminado Gerdau — Modulação 4x4m'],['Fechamentos','Telhas Termoacústicas & Alvenaria Pintada'],['Conforto','Brises Orientáveis para Proteção Solar'],['Sustentabilidade','Ventilação Cruzada Passiva']]},
-  ipojuca:{title:'Residência Vila Ipojuca',sub:'São Paulo, SP — 310 m² — Lote Estreito com Patamares Topográficos',year:'2014',loc:'São Paulo, SP',area:'310 m²',
-    desc:'Lote estreito (6x30m) com aclive. Patamares em meios-níveis otimizam a movimentação de terra e canalizam luz natural pelas fachadas.',
-    imgs:['mass_arquitetura/images/DUvlV_IkSed_0.jpg','mass_arquitetura/images/DUvlV_IkSed_1.jpg'],
-    specs:[['Lote','6,00m x 30,00m — sem recuos laterais'],['Estratégia','Meios-níveis com iluminação zênital central']]},
-  corporativo:{title:'Espaço Comercial & Corporativo',sub:'Jardins, São Paulo, SP — 450 m² — Retrofit com Pele de Vidro',year:'2013',loc:'Jardins, São Paulo',area:'450 m²',
-    desc:'Conversão de residência em sede corporativa. Pele de vidro Structural Glazing e pátio integrado para empresa de automação.',
-    imgs:['mass_arquitetura/images/DVGvRGAEZr1_0.jpg','mass_arquitetura/images/DVGvRGAEZr1_1.jpg','mass_arquitetura/images/DVGvRGAEZr1_2.jpg'],
-    specs:[['Fachada','Pele de Vidro Structural Glazing'],['Sistemas','Automação Integrada & VRF Inverter'],['Fotografia','Pedro Coltro']]},
-  sc:{title:'Estudo Residência Santa Catarina',sub:'Governador Celso Ramos, SC — 620 m² — MLC & Concreto à Vista',year:'2025',loc:'Governador Celso Ramos, SC',area:'620 m²',
-    desc:'Estrutura mista de concreto armado e Madeira Laminada Colada. Caixilhos recolhem-se nas paredes para integrar interior e paisagem.',
-    imgs:['mass_arquitetura/images/DVMDgyrEaGv_0.jpg','mass_arquitetura/images/DVMDgyrEaGv_1.jpg'],
-    specs:[['Estrutura Mista','Concreto C40 + Vigas MLC'],['Vidros','Low-E Dupos com Atenuação Térmica'],['Parceria','Mass Arquitetura + Norea De Vitto'],['Visualização','Studio Lion 3D']]},
-  parnaiba2:{title:'Residência Santana de Parnaíba',sub:'Santana de Parnaíba, SP — 850 m² — Dois Pavimentos, 5 Suítes',year:'2013',loc:'Santana de Parnaíba, SP',area:'850 m²',
-    desc:'Dois pavimentos. Térreo social voltado ao norte com sol durante todo o dia. Superior com 5 suítes, sala de TV e copa.',
-    imgs:['mass_arquitetura/images/DUqNMjcEQd9_0.jpg','mass_arquitetura/images/DUqNMjcEQd9_1.jpg'],
-    specs:[['Estrutura','Concreto Armado Protendido'],['Caixilharia','Alumínio — JMar Esquadrias'],['Paisagismo','Daniela Ramalho'],['Textura','Terracor'],['Fotografia','Ana Mello']]},
-  perdizes:{title:'Reforma Apartamento Perdizes',sub:'Perdizes, São Paulo, SP — 240 m² — Marcenaria Autoral em Ipê',year:'2025',loc:'Perdizes, São Paulo',area:'240 m²',
-    desc:'Integração de estar e cozinha com painéis autorais em Ipê maciço. Portas pivotantes camufladas e conforto acústico.',
-    imgs:['mass_arquitetura/images/DUsue6ykRFj_0.jpg','mass_arquitetura/images/DUsue6ykRFj_1.jpg','mass_arquitetura/images/DUsue6ykRFj_2.jpg'],
-    specs:[['Marcenaria','Painéis de Ipê Maciço — Artla Capm'],['Revestimentos','Mármore Grigio — Graniston'],['Iluminação','LABLUZ Arquitetura de Luz'],['Visualização','Studio Lion 3D']]}
-};
-
-// Initialize after DOM
-document.addEventListener('DOMContentLoaded', () => {
-  // NAV SCROLL
-  const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>{nav.classList.toggle('stuck',window.scrollY>60)});
-
-  // MOBILE MENU
-  const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobileMenu');
-  mb.addEventListener('click',()=>{mb.classList.toggle('open');mm.classList.toggle('open');document.body.style.overflow=mm.classList.contains('open')?'hidden':''});
-  document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>{mb.classList.remove('open');mm.classList.remove('open');document.body.style.overflow=''}));
-
-  // FILTERS
-  document.querySelectorAll('.filters button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on');
-      const f=btn.dataset.f;
-      document.querySelectorAll('.proj').forEach(p=>{
-        p.style.display=(f==='all'||p.dataset.cat===f)?'block':'none';
-      });
-    });
-  });
-
-  // PROJECT OVERLAY
-  const overlay=document.getElementById('overlay');
-  document.querySelectorAll('.proj').forEach(p=>{
-    p.addEventListener('click',()=>{
-      const d=data[p.dataset.id];if(!d)return;
-      document.getElementById('ov-title').textContent=d.title;
-      document.getElementById('ov-sub').textContent=d.sub;
-      document.getElementById('ov-meta').textContent=d.loc+' — '+d.year+' // '+d.area;
-      document.getElementById('ov-desc').textContent=d.desc;
-      document.getElementById('ov-gallery').innerHTML=d.imgs.map(i=>'<img src="'+i+'" alt="'+d.title+'" loading="lazy">').join('');
-      document.getElementById('ov-specs').innerHTML=d.specs.map(s=>'<tr><th>'+s[0]+'</th><td>'+s[1]+'</td></tr>').join('');
-      overlay.classList.add('open');document.body.style.overflow='hidden';
-    });
-  });
-  function closeOverlay(){overlay.classList.remove('open');document.body.style.overflow=''}
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeOverlay()});
-});
-
-// CUSTOM CIRCLE CURSOR
-const cursorCircle=document.getElementById('cursor-circle');
-const cursorInner=document.querySelector('#cursor-circle .cursor-inner');
-const cursorText=document.querySelector('#cursor-circle .cursor-text');
-let mouseX=0,mouseY=0;
-
-document.addEventListener('mousemove',e=>{
-  mouseX=e.clientX;
-  mouseY=e.clientY;
-  cursorCircle.style.setProperty('--mouse-x',\`${mouseX}px\`);
-  cursorCircle.style.setProperty('--mouse-y',\`${mouseY}px\`);
-});
-
-interactables=document.querySelectorAll('.proj,.btn-cta,.nav-links a,.material-card,.filter-btn,.menu-btn');
-interactables.forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cursorInner.classList.add('hover');
-    if(cursorText){cursorText.classList.add('visible');cursorText.textContent=getInteractableText(el);}
-  });
-  el.addEventListener('mouseleave',()=>{
-    cursorInner.classList.remove('hover');
-    if(cursorText){cursorText.classList.remove('visible');cursorText.textContent='';}
- });
-});
-
-function getInteractableText(el){
-  if(el.classList.contains('proj'))return'EXPLORE';
-  if(el.classList.contains('btn-cta'))return'INQUIRE';
-  if(el.classList.contains('material-card'))return'SELECT';
-  if(el.classList.contains('filter-btn'))return'VIEW';
-  if(el.classList.contains('menu-btn'))return'MENU';
-  return '';
-}
-
-// Lenis Smooth Scroll
-try{
-  const lenis=new Lenis({duration:1.2,easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),direction:'vertical',smooth:true});
-  lenis.on('scroll',()=>{ScrollTrigger.update()});
-  gsap.ticker.add((time)=>{lenis.raf(time*1000)});
-  gsap.ticker.lagSmoothing(0,0);
-} catch(e){console.warn('Lenis fallback')}
-
-// Three.js WebGL Background
-try{
-  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
-  camera.position.z=40;
-  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setSize(window.innerWidth,window.innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  const geom=new THREE.IcosahedronGeometry(20,1),mat=new THREE.MeshBasicMaterial({color:0xd8c3b0,wireframe:true,transparent:true,opacity:0.05});const mesh=new THREE.Mesh(geom,mat);scene.add(mesh);
-  const pCount=80,pos=new Float32Array(pCount*3);for(let i=0;i<pCount*3;i++)pos[i]=(Math.random()-0.5)*60;const pGeo=new THREE.BufferGeometry();pGeo.setAttribute('position',new THREE.BufferAttribute(pos,3));const pMat=new THREE.PointsMaterial({color:0xd8c3b0,size:0.12,transparent:true,opacity:0.25});const pSys=new THREE.Points(pGeo,pMat);scene.add(pSys);
-  const alight=new THREE.AmbientLight(0xffffff,0.15),dlight=new THREE.DirectionalLight(0xd8c3b0,0.3);dlight.position.set(10,10,10);scene.add(alight,dlight);
-  const lt={x:0,y:0};window.addEventListener('mousemove',e=>{lt.x=(e.clientX/window.innerWidth-0.5)*0.6;lt.y=(e.clientY/window.innerHeight-0.5)*0.6;});
-  const animate=()=>{requestAnimationFrame(animate);mesh.rotation.x+=0.002;mesh.rotation.y+=0.003;pSys.rotation.y-=0.001;camera.position.x+=(lt.x*12-camera.position.x)*0.05;camera.position.y+=(lt.y*12-camera.position.y)*0.05;camera.lookAt(scene.position);renderer.render(scene,camera)};animate();
-  window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)});
-} catch(e){console.warn('Three.js fallback')}
-
-// GSAP Animations
-if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){
-  gsap.registerPlugin(ScrollTrigger);
-  gsap.from('.hero h1',{y:40,opacity:0,duration:1.2,ease:'power3.out',delay:0.3});
-  gsap.from('.hero p,.hero-meta',{y:20,opacity:0,duration:1,ease:'power3.out',delay:0.5});
-  gsap.utils.toArray('.manifesto h2,.portfolio-head h2,.principal h2').forEach(el=>{gsap.from(el,{scrollTrigger:{trigger:el,start:'top 85%',toggleActions:'play none none reverse'},y:30,opacity:0,duration:1,ease:'power3.out')});
-});
-  gsap.utils.toArray('.proj').forEach((c,i)=>{c.addEventListener('mouseenter',()=>gsap.to(c,{y:-8,duration:0.4,ease:'power2.out'}));c.addEventListener('mouseleave',()=>gsap.to(c,{y:0,duration:0.6,ease:'power2.out'}));
-});
-  const pb=document.querySelector('.scroll-progress');
-  if(pb&&typeof lenis!=='undefined'){window.addEventListener('scroll',()=>{const s=window.scrollY||document.documentElement.scrollTop;const h=document.documentElement.scrollHeight-window.innerHeight;pb.style.width=Math.max(0,Math.min(100,(s/h)*100))+'%'});
-}
-</script>
+  <!-- Application Script -->
+  <script src="js/app.js"></script>
 </body>
 </html>
