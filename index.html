@@ -8,47 +8,87 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0a0a0a;color:#f0f0f0;font-family:'Inter',sans-serif}
-
-  /* ── hero ── */
-  .hero{position:relative;height:100vh;min-height:640px;display:flex;align-items:flex-end;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;background:url('mass_arquitetura/images/DVQ70yhEYC3.jpg') center/cover no-repeat}
-  .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.15) 100%)}
-  .hero-content{position:relative;z-index:2;width:100%;max-width:1400px;margin:0 auto;padding:0 48px 80px}
-  .hero-label{font-family:'Inter',sans-serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:#999;margin-bottom:20px}
-  .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,7vw,5.5rem);line-height:1.05;letter-spacing:-1px;margin-bottom:24px;max-width:800px}
-  .hero-desc{font-family:'Inter',sans-serif;font-weight:300;font-size:1rem;line-height:1.7;color:#bbb;max-width:520px;margin-bottom:32px}
-  .hero-meta{display:flex;gap:40px;flex-wrap:wrap}
-  .hero-meta dt{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#666;margin-bottom:4px}
-  .hero-meta dd{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#ddd}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{background:#0a0a0a;color:#f0f0f0;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
   /* ── nav ── */
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;transition:background .3s}
-  nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(12px)}
-  .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#fff;text-decoration:none}
-  .nav-links{display:flex;gap:28px;list-style:none}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 24px;transition:background .3s,box-shadow .3s}
+  nav.scrolled{background:rgba(10,10,10,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+  .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:#fff;text-decoration:none}
+  .nav-links{display:flex;gap:24px;list-style:none}
   .nav-links a{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:#888;text-decoration:none;transition:color .2s}
-  .nav-links a:hover{color:#fff}
+  .nav-links a:hover,.nav-links a:focus{color:#fff}
+
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:110}
+  .hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:transform .3s,opacity .3s}
+  .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+  .mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);flex-direction:column;justify-content:center;align-items:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .mobile-menu.open{opacity:1;pointer-events:auto}
+  .mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;letter-spacing:2px;color:#ccc;text-decoration:none;transition:color .2s}
+  .mobile-menu a:hover{color:#fff}
+
+  /* ── hero ── */
+  .hero{position:relative;height:100vh;height:100dvh;min-height:500px;display:flex;align-items:flex-end;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:url('mass_arquitetura/images/DVQ70yhEYC3.jpg') center/cover no-repeat}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.4) 45%,rgba(0,0,0,.15) 100%)}
+  .hero-content{position:relative;z-index:2;width:100%;max-width:1400px;margin:0 auto;padding:0 24px 48px}
+  .hero-label{display:block;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#999;margin-bottom:16px}
+  .hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.2rem,6vw,5.5rem);line-height:1.08;letter-spacing:-0.5px;margin-bottom:20px;max-width:800px}
+  .hero-desc{font-weight:300;font-size:.9rem;line-height:1.7;color:#bbb;max-width:480px;margin-bottom:28px}
+  .hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+  .hero-meta dt{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:#666;margin-bottom:3px}
+  .hero-meta dd{font-family:'Cormorant Garamond',serif;font-size:1rem;color:#ddd}
 
   /* ── section header ── */
-  .section-header{text-align:center;padding:100px 24px 48px}
-  .section-header h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.4rem;letter-spacing:1px;margin-bottom:10px}
-  .section-header p{font-size:.8rem;letter-spacing:2px;color:#666;text-transform:uppercase}
+  .section-header{text-align:center;padding:72px 20px 36px}
+  .section-header h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.8rem,4vw,2.4rem);letter-spacing:1px;margin-bottom:8px}
+  .section-header p{font-size:.75rem;letter-spacing:2px;color:#666;text-transform:uppercase}
 
   /* ── grid ── */
-  .grid{columns:3;column-gap:16px;padding:0 24px 60px;max-width:1400px;margin:0 auto}
-  @media(max-width:900px){.grid{columns:2}}
-  @media(max-width:560px){.grid{columns:1}.hero-content{padding:0 24px 60px}.hero-meta{gap:24px}nav{padding:16px 24px}}
-  .card{break-inside:avoid;margin-bottom:16px;border-radius:6px;overflow:hidden;position:relative;background:#141414}
+  .grid{columns:1;column-gap:0;padding:0 16px 48px;max-width:1400px;margin:0 auto}
+  .card{break-inside:avoid;margin-bottom:16px;border-radius:8px;overflow:hidden;position:relative;background:#141414}
   .card img{width:100%;display:block;transition:opacity .3s}
-  .card:hover img{opacity:.85}
-  .card .info{padding:14px 16px}
-  .card .title{font-size:.85rem;font-weight:500;color:#ccc;line-height:1.4;margin-bottom:6px}
-  .card .meta{font-size:.75rem;color:#666}
-  .card .likes{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.65);padding:4px 10px;border-radius:20px;font-size:.7rem;color:#fff}
+  .card:hover img{opacity:.88}
+  .card .info{padding:12px 14px}
+  .card .title{font-size:.82rem;font-weight:500;color:#ccc;line-height:1.4;margin-bottom:4px}
+  .card .meta{font-size:.72rem;color:#666;line-height:1.5}
+  .card .likes{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);padding:4px 10px;border-radius:20px;font-size:.65rem;color:#fff;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 
   /* ── footer ── */
-  footer{text-align:center;padding:60px 20px;border-top:1px solid #1a1a1a;color:#444;font-size:.8rem;letter-spacing:1px}
+  footer{text-align:center;padding:40px 20px;border-top:1px solid #1a1a1a;color:#444;font-size:.75rem;letter-spacing:1px;line-height:1.8}
+
+  /* ── tablet ── */
+  @media(min-width:640px){
+    nav{padding:24px 40px}
+    .nav-logo{font-size:1.1rem}
+    .nav-links{gap:28px}
+    .hero-content{padding:0 40px 64px}
+    .hero-label{font-size:.7rem;letter-spacing:4px;margin-bottom:20px}
+    .hero-desc{font-size:1rem;max-width:520px}
+    .hero-meta{gap:20px 36px}
+    .hero-meta dt{font-size:.65rem}
+    .hero-meta dd{font-size:1.1rem}
+    .section-header{padding:88px 24px 44px}
+    .grid{columns:2;column-gap:14px;padding:0 24px 56px}
+    .card .info{padding:14px 16px}
+    .card .title{font-size:.85rem}
+  }
+
+  /* ── desktop ── */
+  @media(min-width:960px){
+    nav{padding:28px 48px}
+    .nav-logo{font-size:1.15rem}
+    .hero-content{padding:0 48px 80px}
+    .hero-title{letter-spacing:-1px}
+    .hero-desc{font-size:1rem}
+    .hero-meta{grid-template-columns:repeat(4,1fr);gap:0;justify-items:start}
+    .hero-meta > div{padding-right:32px}
+    .section-header{padding:100px 24px 48px}
+    .grid{columns:3;column-gap:16px;padding:0 24px 60px}
+  }
 </style>
 </head>
 <body>
@@ -59,7 +99,15 @@
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#sobre">Sobre</a></li>
   </ul>
+  <button class="hamburger" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#portfolio" class="mobile-link">Portfolio</a>
+  <a href="#sobre" class="mobile-link">Sobre</a>
+</div>
 
 <section class="hero">
   <div class="hero-bg"></div>
@@ -67,8 +115,8 @@
     <span class="hero-label">Gustavo Massimino &mdash; Arquitetura e Urbanismo</span>
     <h1 class="hero-title">A arquitetura acontece quando ela atende aos seus objetivos</h1>
     <p class="hero-desc">
-      Escritório de arquitetura com atuação em projetos residenciais, comerciais e corporativos. 
-      Membro do CAU/SP, com mestrado em Projeto de Arquitetura pela FAU-USP. 
+      Escritório de arquitetura com atuação em projetos residenciais, comerciais e corporativos.
+      Membro do CAU/SP, com mestrado em Projeto de Arquitetura pela FAU-USP.
       Mais de 15 anos transformando espaços e vidas.
     </p>
     <dl class="hero-meta">
@@ -307,8 +355,26 @@
 
 <script>
   const nav = document.getElementById('nav');
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 80);
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      menuBtn.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
   });
 </script>
 
