@@ -1,6 +1,6 @@
 /* ==========================================================================
    MASS ARQUITETURA — SÃO PAULO // NEW YORK
-   Interactive Engine & WebGL Shader Architecture
+   Interactive Engine & WebGL Shader Architecture (US$ 100k+ Standard)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,25 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
   initGSAPAnimations();
   initMonographEngine();
   initFilterSystem();
-  initConsultationModal();
   initMaterialityShowcase();
+  initConsultationModal();
+  initSmoothPageTransitions();
 });
 
-/* --------------------------------------------------------------------------
-   1. LENIS SMOOTH SCROLL INTEGRATION
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 1. LENIS SMOOTH SCROLL INTEGRATION WITH GSAP SYNC
+// --------------------------------------------------------------------------
 let lenis;
 function initLenisScroll() {
   if (typeof Lenis !== 'undefined') {
     lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: 'vertical',
       gestureDirection: 'vertical',
       smooth: true,
-      mouseMultiplier: 1,
+      mouseMultiplier: 1.05,
       smoothTouch: false,
       touchMultiplier: 2,
+      weight: 0.3,
     });
 
     function raf(time) {
@@ -37,7 +39,7 @@ function initLenisScroll() {
     }
     requestAnimationFrame(raf);
 
-    // Sync Lenis with GSAP ScrollTrigger if available
+    // Sync Lenis with GSAP ScrollTrigger
     if (typeof ScrollTrigger !== 'undefined') {
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add((time) => {
@@ -63,15 +65,15 @@ function initLenisScroll() {
 
     if (progressBar) {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollY / totalHeight) * 100;
-      progressBar.style.width = `${progress}%`;
+      const progress = scrollY / totalHeight;
+      progressBar.style.width = `${progress * 100}%`;
     }
   });
 }
 
-/* --------------------------------------------------------------------------
-   2. CUSTOM MAGNETIC CURSOR WITH LERP PHYSICS
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 2. CUSTOM MAGNETIC CURSOR WITH LERP PHYSICS, SHADER STATE & EXPANDED HIT AREAS
+// --------------------------------------------------------------------------
 function initCustomCursor() {
   const cursor = document.getElementById('custom-cursor');
   const cursorText = cursor ? cursor.querySelector('.cursor-text') : null;
@@ -82,6 +84,8 @@ function initCustomCursor() {
   let mouseY = 0;
   let cursorX = 0;
   let cursorY = 0;
+  let targetScale = 1;
+  let isInteracting = false;
 
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
@@ -89,179 +93,391 @@ function initCustomCursor() {
   });
 
   function renderCursor() {
-    cursorX += (mouseX - cursorX) * 0.18;
-    cursorY += (mouseY - cursorY) * 0.18;
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+    const dx = mouseX - cursorX;
+    const dy = mouseY - cursorY;
+
+    // Lerp-based smoothing with physics variance
+    cursorX += dx * 0.16;
+    cursorY += dy * 0.16;
+
+    // Dynamic scaling based on interaction intensity
+    if (isInteracting) {
+      targetScale = 0.85 + Math.abs(dx * 0.002) + Math.abs(dy * 0.002);
+    } else {
+      targetScale = 1;
+    }
+
+    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%) scale(${targetScale})`;
+    cursor.style.width = `${8 + 44 * (1 - targetScale)}px`;
+    cursor.style.height = `${8 + 44 * (1 - targetScale)}px`;
     requestAnimationFrame(renderCursor);
   }
   requestAnimationFrame(renderCursor);
 
-  // Hover targets
+  // Hover targets with contextual text and shader state
   const hoverables = [
-    { selector: '.monograph-card', text: 'EXPLORE' },
-    { selector: '.btn-cta', text: 'INQUIRE' },
-    { selector: '.material-card', text: 'SELECT' },
-    { selector: '.nav-link, .filter-btn', text: 'VIEW' },
-    { selector: '.modal-close-btn', text: 'CLOSE' }
+    { selector: '.monograph-card', text: 'EXPLORE MONOGRAPH', hitRadius: 80 },
+    { selector: '.btn-cta', text: 'INQUIRY', hitRadius: 64 },
+    { selector: '.material-card', text: 'SELECT', hitRadius: 48 },
+    { selector: '.nav-link, .filter-btn', text: 'VIEW', hitRadius: 56 },
+    { selector: '.modal-close-btn', text: 'CLOSE', hitRadius: 40 },
+    { selector: '.hero-title', text: 'READ', hitRadius: 120 },
   ];
 
-  hoverables.forEach(({ selector, text }) => {
-    document.querySelectorAll(selector).forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('active');
-        if (cursorText) cursorText.textContent = text;
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('active');
-        if (cursorText) cursorText.textContent = '';
-      });
+  // Intersection observers for hit area detection
+  const hitObservers = [];
+
+  hoverables.forEach(({ selector, text, hitRadius }) => {
+    const elements = document.querySelectorAll(selector);
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isHovering = Array.from(entries).some(entry => entry.isIntersecting);
+        
+        // Update cursor state based on hover
+        if (isHovering) {
+          cursor.classList.add('active');
+          if (cursorText) cursorText.textContent = text;
+          cursor.classList.add('expanded-' + selector.split('.')[1] || 'cta');
+          isInteracting = true;
+        } else {
+          cursor.classList.remove('active');
+          if (cursorText) cursorText.textContent = '';
+          cursor.classList.remove('expanded-' + selector.split('.')[1] || 'cta');
+          isInteracting = false;
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    elements.forEach(el => {
+      observer.observe(el);
+      hitObservers.push(observer);
     });
   });
+
+  // Cursor leave resets when mouse leaves viewport
+  const viewportObserver = new IntersectionObserver(
+    (entries) => {
+      if (!entries[0].isIntersecting) {
+        cursor.classList.remove('active');
+        if (cursorText) cursorText.textContent = '';
+        cursor.classList.remove('expanded-cta');
+        cursor.classList.remove('expanded-monograph-card');
+        cursor.classList.remove('expanded-btn-cta');
+        cursor.classList.remove('expanded-material-card');
+        cursor.classList.remove('expanded-nav-link');
+        cursor.classList.remove('expanded-modal-close-btn');
+        cursor.classList.remove('expanded-hero-title');
+        isInteracting = false;
+      }
+    },
+    { root: null }
+  );
+
+  viewportObserver.observe(document.querySelector('body'));
 }
 
-/* --------------------------------------------------------------------------
-   3. THREE.JS WEBGL BACKGROUND CANVAS
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 3. THREE.JS WEBGL BACKGROUND CANVAS — TECTONIC WIREFRAME WITH CURSOR INTERACTION
+// --------------------------------------------------------------------------
 function initWebGLBackground() {
   const canvas = document.getElementById('webgl-canvas');
   if (!canvas || typeof THREE === 'undefined') return;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 30;
+  scene.background = new THREE.Color(0x050505);
+
+  const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 40;
+  camera.lookAt(0, 0, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.5));
+  renderer.setClearColor(0x050505, 1);
 
-  // Tectonic Architectural Wireframe Geometry
-  const geometry = new THREE.IcosahedronGeometry(18, 2);
+  // Tectonic Icosahedron Wireframe — Golden Ratio proportions
+  const geometry = new THREE.IcosahedronGeometry(22, 1);
   const material = new THREE.MeshBasicMaterial({
     color: 0xd8c3b0,
     wireframe: true,
     transparent: true,
-    opacity: 0.08
+    opacity: 0.04,
+    linewidth: 1
   });
 
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
-  // Particle Field
-  const particlesCount = 200;
+  // Dual-layer wireframe for depth perception
+  const geometryInner = new THREE.IcosahedronGeometry(16, 1);
+  const materialInner = new THREE.MeshBasicMaterial({
+    color: 0x48cae4,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.03,
+    linewidth: 0.5
+  });
+  const meshInner = new THREE.Mesh(geometryInner, materialInner);
+  meshInner.position.z = -0.5;
+  scene.add(meshInner);
+
+  // Particle Field — Subtle tectonic dispersion
+  const particlesCount = 300;
   const positions = new Float32Array(particlesCount * 3);
   for (let i = 0; i < particlesCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 100;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const radius = 25 + Math.random() * 15;
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = radius * Math.cos(phi);
   }
   const particleGeo = new THREE.BufferGeometry();
   particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   const particleMat = new THREE.PointsMaterial({
     color: 0xd8c3b0,
-    size: 0.15,
+    size: 0.2,
     transparent: true,
-    opacity: 0.3
+    opacity: 0.18,
+    sizeAttenuation: true
   });
   const particleSystem = new THREE.Points(particleGeo, particleMat);
   scene.add(particleSystem);
 
-  // Animation Loop
+  // Cursor influence field — displaces particles slightly on mouse move
+  const cursorInfluence = { x: 0, y: 0 };
+  window.addEventListener('mousemove', (e) => {
+    cursorInfluence.x = (e.clientX / window.innerWidth - 0.5) * 0.8;
+    cursorInfluence.y = (e.clientY / window.innerHeight - 0.5) * 0.8;
+  });
+
+  // Light sources — subtle, static
+  const ambientLight = new THREE.AmbientLight(0x181818, 0.3);
+  scene.add(ambientLight);
+
+  const dirLight1 = new THREE.DirectionalLight(0xd8c3b0, 0.15);
+  dirLight1.position.set(10, 10, 10);
+  scene.add(dirLight1);
+
+  const dirLight2 = new THREE.DirectionalLight(0x48cae4, 0.12);
+  dirLight2.position.set(-10, -10, 10);
+  scene.add(dirLight2);
+
+  // Animation Loop — with cursor influence
   let targetX = 0;
   let targetY = 0;
-
-  window.addEventListener('mousemove', (e) => {
-    targetX = (e.clientX / window.innerWidth - 0.5) * 0.5;
-    targetY = (e.clientY / window.innerHeight - 0.5) * 0.5;
-  });
+  let meshRotation = 0;
 
   function animate() {
     requestAnimationFrame(animate);
 
-    mesh.rotation.x += 0.001;
-    mesh.rotation.y += 0.0015;
+    mesh.rotation.y += 0.0012;
+    mesh.rotation.x += 0.0008;
+    meshInner.rotation.y -= 0.001;
 
-    particleSystem.rotation.y -= 0.0005;
+    particleSystem.rotation.y -= 0.0003;
+    particleSystem.rotation.x += 0.0002;
 
-    camera.position.x += (targetX * 10 - camera.position.x) * 0.03;
-    camera.position.y += (-targetY * 10 - camera.position.y) * 0.03;
+    // Cursor-influenced camera subtle pull
+    targetX = cursorInfluence.x * 5;
+    targetY = cursorInfluence.y * 5;
+    camera.position.x += (targetX - camera.position.x) * 0.015;
+    camera.position.y += (-targetY - camera.position.y) * 0.015;
     camera.lookAt(scene.position);
+
+    // Rhythmic rotation pulse based on time
+    const time = performance.now() / 1000;
+    mesh.rotation.z = Math.sin(time * 0.3) * 0.02;
 
     renderer.render(scene, camera);
   }
   animate();
 
+  // Resize handler
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.5));
   });
 }
 
-/* --------------------------------------------------------------------------
-   4. GSAP SCROLLTRIGGER REVEAL ANIMATIONS
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 4. GSAP SCROLLTRIGGER & FLIP REVEAL ANIMATIONS — PREMIUM MOTION
+// --------------------------------------------------------------------------
 function initGSAPAnimations() {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, Flip);
 
-  // Hero Title Reveal
+  // Lean into 60fps/120fps ticker pacing
+  gsap.ticker.fps(60);
+  gsap.ticker.lagSmoothing(16, 4);
+
+  // Hero Title & Meta Reveal on load
   gsap.from('.hero-title', {
-    y: 40,
+    y: 50,
     opacity: 0,
-    duration: 1.2,
+    duration: 1.3,
     ease: 'power3.out',
-    delay: 0.2
+    delay: 0.3
   });
 
   gsap.from('.hero-meta-badge', {
-    y: 20,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power3.out'
-  });
-
-  gsap.from('.hero-sub-grid', {
-    y: 30,
+    y: 25,
     opacity: 0,
     duration: 1,
     ease: 'power3.out',
     delay: 0.4
   });
 
-  // Section Headers Reveal
-  gsap.utils.toArray('.section-label, .manifesto-heading, .portfolio-title-group').forEach(el => {
+  gsap.from('.hero-sub-grid', {
+    y: 40,
+    opacity: 0,
+    duration: 1.1,
+    ease: 'power3.out',
+    delay: 0.5
+  });
+
+  // Section Headers Reveal — ScrollTrigger based
+  gsap.utils.toArray('.section-label, .manifesto-heading, .portfolio-title-group, .principal-details h2').forEach(el => {
     gsap.from(el, {
       scrollTrigger: {
         trigger: el,
-        start: 'top 85%',
-        toggleActions: 'play none none reverse'
+        start: 'top 82%',
+        toggleActions: 'play none none reverse',
+        once: true
       },
-      y: 30,
+      y: 40,
       opacity: 0,
       duration: 1,
       ease: 'power3.out'
     });
   });
 
-  // Monograph Cards Parallax Entry
-  gsap.utils.toArray('.monograph-card').forEach((card, index) => {
+  // Monograph Cards Flip Entry — with delay cascade
+  const monographCards = document.querySelectorAll('.monograph-card');
+  monographCards.forEach((card, index) => {
     gsap.from(card, {
       scrollTrigger: {
         trigger: card,
         start: 'top 88%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none reverse',
+        once: true
       },
-      y: 50,
+      y: 60,
       opacity: 0,
-      duration: 0.9,
-      delay: (index % 3) * 0.15,
-      ease: 'power3.out'
+      rotationX: index % 2 === 0 ? -15 : 15,
+      duration: 0.95,
+      delay: (index % 4) * 0.12,
+      ease: 'power3.out',
+      flip: 'to_right_start'
+    });
+  });
+
+  // Material Cards Hover Flip (3D Tilt)
+  const materialCards = document.querySelectorAll('.material-card');
+  materialCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      gsap.to(card, {
+        rotateY: rotateX,
+        rotateX: rotateY,
+        scale: 1.02,
+        duration: 0.4,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, {
+        rotateY: 0,
+        rotateX: 0,
+        scale: 1,
+        duration: 0.6,
+        ease: 'power2.out'
+      });
+    });
+  });
+
+  // Principal Portrait Hover Tilt
+  const portraitWrapper = document.querySelector('.principal-portrait-wrapper');
+  if (portraitWrapper) {
+    portraitWrapper.addEventListener('mousemove', (e) => {
+      const rect = portraitWrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 25;
+      const rotateY = (centerX - x) / 25;
+
+      gsap.to(portraitWrapper.querySelector('img'), {
+        rotateX: rotateX,
+        rotateY: rotateY,
+        scale: 1.03,
+        duration: 0.5,
+        ease: 'power2.out'
+      });
+    });
+
+    portraitWrapper.addEventListener('mouseleave', () => {
+      gsap.to(portraitWrapper.querySelector('img'), {
+        rotateX: 0,
+        rotateY: 0,
+        scale: 1,
+        duration: 0.6,
+        ease: 'power2.out'
+      });
+    });
+  }
+
+  // Smooth page transition FLIP on nav link clicks (Barba.js-style without full SPA)
+  document.querySelectorAll('a.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      // Allow normal anchor navigation; GSAP will animate the section into view
+      const targetId = link.getAttribute('href');
+      if (targetId.startsWith('#')) {
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const currentSection = document.querySelector('main > section.active');
+          if (currentSection) {
+            Flip.from(currentSection, {
+              duration: 0.75,
+              ease: 'power2.inOut',
+              onComplete: () => {
+                window.scrollTo({
+                  top: targetElement.offsetTop - 80,
+                  behavior: 'smooth'
+                });
+              }
+            });
+          } else {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
     });
   });
 }
 
-/* --------------------------------------------------------------------------
-   5. MONOGRAPH DATA & INTERACTIVE CASE STUDY ENGINE
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 5. MONOGRAPH DATA ENGINE & INTERACTIVE CASE STUDY DRAWER
+// --------------------------------------------------------------------------
 const monographsData = {
   parnaiba: {
     id: "parnaiba",
@@ -451,6 +667,7 @@ const monographsData = {
   }
 };
 
+// Monograph Engine Initialization
 function initMonographEngine() {
   const modal = document.getElementById('monograph-modal');
   if (!modal) return;
@@ -463,6 +680,9 @@ function initMonographEngine() {
       e.preventDefault();
       const id = card.getAttribute('data-monograph');
       if (monographsData[id]) {
+        // Stop Lenis during modal open
+        if (lenis) lenis.stop();
+        
         openMonographModal(monographsData[id]);
       }
     });
@@ -472,9 +692,16 @@ function initMonographEngine() {
     closeBtn.addEventListener('click', closeMonographModal);
   }
 
-  // Close on Escape or click backdrop
+  // Close on Escape
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeMonographModal();
+  });
+
+  // Close on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeMonographModal();
+    }
   });
 }
 
@@ -487,23 +714,43 @@ function openMonographModal(data) {
   document.getElementById('modal-subtitle').textContent = data.subtitle;
   document.getElementById('modal-meta').textContent = `${data.location} — ${data.year} // ${data.area}`;
 
-  // Populate Description
-  document.getElementById('modal-tab-desc').innerHTML = `
-    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 32px;">${data.description}</p>
-  `;
-
-  // Populate Specs Table
-  const specsTable = document.getElementById('modal-specs-table');
-  if (specsTable) {
-    specsTable.innerHTML = data.specs.map(s => `
-      <tr>
-        <th>${s.label}</th>
-        <td>${s.val}</td>
-      </tr>
-    `).join('');
+  // Populate Description with animated fade
+  const descPanel = document.getElementById('modal-tab-desc');
+  if (descPanel) {
+    gsap.from(descPanel, {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      ease: 'power2.out',
+      delay: 0.1
+    });
+    descPanel.innerHTML = `
+      <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 32px;">${data.description}</p>
+    `;
   }
 
-  // Populate Gallery
+  // Populate Specs Table with staggered entries
+  const specsTable = document.getElementById('modal-specs-table');
+  if (specsTable) {
+    const specsHtml = data.specs.map((s, i) => `
+      <tr>
+        <th style="transition: opacity 0.2s ${i * 0.05}s;">${s.label}</th>
+        <td style="transition: opacity 0.2s ${i * 0.05}s + 0.1s;">${s.val}</td>
+      </tr>
+    `).join('');
+    specsTable.innerHTML = specsHtml;
+    
+    // Animate table rows in
+    gsap.from('.specs-table tr', {
+      opacity: 0,
+      y: 12,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power2.out'
+    });
+  }
+
+  // Populate Gallery with hover zoom
   const galleryGrid = document.getElementById('modal-gallery-grid');
   if (galleryGrid) {
     galleryGrid.innerHTML = data.gallery.map(imgSrc => `
@@ -511,20 +758,52 @@ function openMonographModal(data) {
         <img src="${imgSrc}" alt="${data.title}" loading="lazy"/>
       </div>
     `).join('');
+    
+    // Add hover zoom effect to gallery images
+    const modalImgs = galleryGrid.querySelectorAll('img');
+    modalImgs.forEach(img => {
+      img.style.transition = 'transform 0.5s var(--ease-out-expo)';
+      img.style.transform = 'scale(1)';
+      
+      img.addEventListener('mouseenter', () => {
+        gsap.to(img, { scale: 1.15, duration: 0.4, ease: 'power2.out' });
+      });
+      img.addEventListener('mouseleave', () => {
+        gsap.to(img, { scale: 1, duration: 0.4, ease: 'power2.out' });
+      });
+    });
   }
 
   // Populate Blueprint SVG
   const blueprintWrapper = document.getElementById('modal-blueprint-svg');
   if (blueprintWrapper) {
     blueprintWrapper.innerHTML = data.blueprintSvg;
+    
+    // Animate blueprint lines on load
+    const svg = blueprintWrapper.querySelector('svg');
+    if (svg) {
+      const paths = svg.querySelectorAll('path, line, rect, circle, text');
+      paths.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transition = `opacity 0.4s ${i * 0.06}s`;
+        el.style.transitionProperty = 'opacity';
+      });
+      
+      gsap.from(paths, {
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.05,
+        ease: 'power2.out',
+        duration: 0.8
+      });
+    }
   }
 
   // Show Modal & Lock Scroll
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  if (lenis) lenis.stop();
 
-  // Reset Tab
+  // Reset Tab to 'desc'
   switchTab('desc');
 }
 
@@ -536,14 +815,36 @@ function closeMonographModal() {
   if (lenis) lenis.start();
 }
 
-// Tab Switching
+// Tab Switching with GSAP animation
 function switchTab(tabId) {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+  const allBtns = document.querySelectorAll('.tab-btn');
+  const allPanels = document.querySelectorAll('.tab-panel');
+  
+  // Animate button state change
+  gsap.to(allBtns, {
+    opacity: 0.4,
+    pointerEvents: 'none',
+    duration: 0.15,
+    ease: 'none'
   });
-  document.querySelectorAll('.tab-panel').forEach(panel => {
-    panel.classList.toggle('active', panel.id === `tab-panel-${tabId}`);
-  });
+  
+  setTimeout(() => {
+    allBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      btn.style.opacity = '';
+      btn.style.pointerEvents = '';
+    });
+    
+    allPanels.forEach(panel => {
+      panel.classList.toggle('active', panel.id === `tab-panel-${tabId}`);
+    });
+    
+    // Force reflow for animation
+    const activePanel = document.getElementById(`tab-panel-${tabId}`);
+    if (activePanel) {
+      gsap.from(activePanel, { opacity: 0, y: 12, duration: 0.4, ease: 'power2.out' });
+    }
+  }, 150);
 }
 
 // Attach Tab Listeners
@@ -554,16 +855,22 @@ document.addEventListener('click', (e) => {
   }
 });
 
-/* --------------------------------------------------------------------------
-   6. FILTER SYSTEM
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 6. FILTER SYSTEM — ENHANCED WITH GSAP ANIMATIONS & SMOOTH CARD MORPH
+// --------------------------------------------------------------------------
 function initFilterSystem() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.monograph-card');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      // Active state with gsap scale
+      filterBtns.forEach(b => {
+        gsap.to(b, { scale: 0.95, duration: 0.2, ease: 'power2.out' });
+        b.classList.remove('active');
+      });
+      
+      gsap.to(btn, { scale: 1.05, duration: 0.2, ease: 'power2.out' });
       btn.classList.add('active');
 
       const filter = btn.getAttribute('data-filter');
@@ -571,32 +878,54 @@ function initFilterSystem() {
       cards.forEach(card => {
         const cat = card.getAttribute('data-category');
         if (filter === 'all' || cat === filter) {
+          // Use GSAP for display toggle instead of inline style
           card.style.display = 'block';
-          gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+          gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' });
         } else {
-          card.style.display = 'none';
+          gsap.to(card, { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in', onComplete: () => {
+            card.style.display = 'none';
+            card.style.opacity = '';
+            card.style.transform = '';
+          }});
         }
       });
     });
   });
 }
 
-/* --------------------------------------------------------------------------
-   7. MATERIALITY SHOWCASE INTERACTION
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 7. MATERIALITY SHOWCASE INTERACTIVE — ENHANCED WITH 3D TILT & PERSISTENT STATE
+// --------------------------------------------------------------------------
 function initMaterialityShowcase() {
   const matCards = document.querySelectorAll('.material-card');
   matCards.forEach(card => {
     card.addEventListener('click', () => {
       matCards.forEach(c => c.classList.remove('active'));
       card.classList.add('active');
+      
+      // Add tactile feedback pulse
+      card.style.transition = 'none';
+      card.offsetHeight; // trigger reflow
+      card.style.transition = 'box-shadow 0.3s, transform 0.3s';
+      card.style.boxShadow = '0 0 0 1px var(--accent-cyan), 0 8px 32px rgba(0,0,0,0.4)';
+      
+      setTimeout(() => {
+        card.style.boxShadow = '';
+      }, 300);
+    });
+    
+    // Hover tilt already handled in CSS/GSAP, ensure persistent active state
+    card.addEventListener('mouseleave', () => {
+      if (!card.classList.contains('active')) {
+        gsap.to(card, { borderColor: 'var(--border-subtle)', transform: 'translateY(0)', duration: 0.3 });
+      }
     });
   });
 }
 
-/* --------------------------------------------------------------------------
-   8. PRIVATE CONSULTATION MODAL
-   -------------------------------------------------------------------------- */
+// --------------------------------------------------------------------------
+// 8. PRIVATE CONSULTATION MODAL — ENHANCED WITH FORM VALIDATION & SMOOTH INTERACTIONS
+// --------------------------------------------------------------------------
 function initConsultationModal() {
   const modal = document.getElementById('consultation-modal');
   const openBtns = document.querySelectorAll('.trigger-consultation');
@@ -621,15 +950,125 @@ function initConsultationModal() {
     });
   }
 
-  // Handle Form Submission
+  // Handle Form Submission with validation
   const form = document.getElementById('consultation-form');
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Thank you for your inquiry. Mass Arquitetura principal office will contact you within 24 hours.');
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-      if (lenis) lenis.start();
+      
+      // Simple client-side validation
+      const clientName = document.getElementById('clientName').value.trim();
+      const clientEmail = document.getElementById('clientEmail').value.trim();
+      const projectDetails = document.getElementById('projectDetails').value.trim();
+      
+      let valid = true;
+      
+      if (!clientName) {
+        gsap.shake(document.getElementById('clientName'));
+        valid = false;
+      }
+      if (!clientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+        gsap.shake(document.getElementById('clientEmail'));
+        valid = false;
+      }
+      if (!projectDetails) {
+        gsap.shake(document.getElementById('projectDetails'));
+        valid = false;
+      }
+      
+      if (valid) {
+        // Subtle success animation
+        gsap.to(modal, { 
+          opacity: 0, 
+          duration: 0.4, 
+          ease: 'power2.in',
+          onComplete: () => {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            if (lenis) lenis.start();
+            
+            // Success state
+            alert('Thank you for your inquiry. Mass Arquitetura principal office will contact you within 24 hours.');
+            
+            // Reset form
+            form.reset();
+          }
+        });
+      }
     });
   }
+}
+
+// --------------------------------------------------------------------------
+// 9. SMOOTH PAGE TRANSITIONS BETWEEN SECTIONS USING GSAP FLIP
+// --------------------------------------------------------------------------
+function initSmoothPageTransitions() {
+  // Observe nav link clicks for section transitions
+  document.querySelectorAll('a.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+      if (targetId.startsWith('#')) {
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // Get current active section
+          const currentSections = document.querySelectorAll('main > section');
+          const currentActive = document.querySelector('main > section.active');
+          
+          if (currentActive && currentActive !== targetElement) {
+            // FLIP animation between sections
+            Flip.from(currentActive, {
+              type: 'x',
+              duration: 0.85,
+              ease: 'power2.inOut',
+              onComplete: () => {
+                // Scroll to target
+                window.scrollTo({
+                  top: targetElement.offsetTop - 80,
+                  behavior: 'auto'
+                });
+                
+                // Mark target as active
+                currentSections.forEach(s => s.classList.remove('active'));
+                targetElement.classList.add('active');
+              }
+            });
+          } else if (!currentActive) {
+            // First load - just scroll
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'auto'
+            });
+            targetElement.classList.add('active');
+          }
+        }
+      }
+    });
+  });
+  
+  // Intersection Observer for auto-section active state on scroll
+  const sections = document.querySelectorAll('main > section');
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+          sections.forEach(section => section.classList.remove('active'));
+          entry.target.classList.add('active');
+        }
+      });
+    },
+    { 
+      root: null, 
+      threshold: 0.35,
+      rootMargin: '-80px 0px 0px 0px' 
+    }
+  );
+  
+  sections.forEach(section => observer.observe(section));
 }

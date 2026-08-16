@@ -3,41 +3,68 @@
    High-Luxury Architectural Studio Experience (US$ 100k+ Agency Standard)
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   TECTONIC DESIGN SYSTEM — VARIABLES ROOT
+   -------------------------------------------------------------------------- */
 :root {
   /* Color Palette — Raw Architectural Tectonics */
-  --bg-primary: #070707;
-  --bg-surface: #111111;
-  --bg-surface-hover: #181818;
-  --bg-card: #0d0d0d;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.16);
-  --border-accent: rgba(216, 195, 176, 0.4);
+  --bg-primary: #050505;
+  --bg-surface: #0e0e0e;
+  --bg-surface-hover: #141414;
+  --bg-card: #0a0a0a;
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-medium: rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(216, 195, 176, 0.18);
+  --border-focus: rgba(72, 202, 228, 0.4);
 
   --text-primary: #f4f4f2;
   --text-secondary: #a0a09c;
   --text-muted: #666662;
   --text-accent: #d8c3b0; /* Warm Champagne Gold / Concrete Accent */
   --accent-gold: #c2ab95;
+  --accent-cyan: #48cae4; /* Tectonic Cyan / Highlight */
 
-  /* Typography */
+  /* Typography Scale & Ratios */
   --font-display: 'Syne', 'Cormorant Garamond', serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'Space Mono', monospace;
 
-  /* Spacing System */
-  --container-max: 1600px;
-  --gutter: clamp(20px, 4vw, 60px);
+  --font-display-size: clamp(2.8rem, 6.5vw, 6.2rem);
+  --font-heading-size: clamp(2rem, 3.8vw, 3.4rem);
+  --font-body-size: 1rem;
+  --font-caption-size: 0.65rem;
 
-  /* Transitions */
+  /* Spacing System — 8-based vertical rhythm */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+
+  /* Transitions — eased, physics-aware */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
-  --transition-fast: 0.25s var(--ease-out-expo);
+  --transition-fast: 0.2s var(--ease-out-expo);
   --transition-smooth: 0.6s var(--ease-out-expo);
-  --transition-slow: 1.1s var(--ease-out-expo);
+  --transition-slow: 1.2s var(--ease-out-expo);
+  --transition-cubic: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Z-Index System */
+  --z-noise: 1;
+  --z-cursor: 9999;
+  --z-header: 900;
+  --z-modal: 2000;
+  --z-footer: 100;
 }
 
-/* Reset & Base Settings */
+/* --------------------------------------------------------------------------
+   RESET & BASE SETTINGS
+   -------------------------------------------------------------------------- */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -53,6 +80,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: auto; /* Managed via Lenis */
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -69,63 +97,76 @@ body {
   color: var(--bg-primary);
 }
 
-/* WebGL Canvas Background */
+/* --------------------------------------------------------------------------
+   WEBGL CANVAS BACKGROUND — TECTONIC WIREFRAME
+   -------------------------------------------------------------------------- */
 #webgl-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: var(--z-noise);
   pointer-events: none;
-  opacity: 0.65;
+  opacity: 0.45;
 }
 
-/* Noise Overlay */
+/* Noise Overlay — Subtle tactile grain */
 .noise-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: var(--z-noise);
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  opacity: 0.3;
 }
 
-/* Custom Magnetic Cursor */
+/* --------------------------------------------------------------------------
+   CUSTOM MAGNETIC CURSOR — LERP PHYSICS WITH TEXT CONTEXT
+   -------------------------------------------------------------------------- */
 #custom-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   background-color: var(--text-accent);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: var(--z-cursor);
   transform: translate(-50%, -50%);
-  transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s, border 0.3s;
+  transition: width 0.2s var(--ease-out-expo), height 0.2s var(--ease-out-expo), background-color 0.2s, border 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  mix-blend-mode: difference;
+  mix-blend: difference;
 }
 
 #custom-cursor .cursor-text {
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 1.5px;
+  font-size: 0.48rem;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: #000;
   font-weight: 700;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.15s;
   white-space: nowrap;
+  background: var(--bg-primary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.52rem;
 }
 
 #custom-cursor.active {
-  width: 72px;
-  height: 72px;
-  background-color: rgba(216, 195, 176, 0.95);
+  width: 48px;
+  height: 48px;
+  background-color: rgba(216, 195, 176, 0.92);
+  border: 1px solid var(--border-accent);
   mix-blend-mode: normal;
 }
 
@@ -133,46 +174,90 @@ body {
   opacity: 1;
 }
 
-/* Scroll Progress Bar */
+/* Expanded hit areas for interactive elements */
+#custom-cursor.expanded-cta {
+  width: 80px;
+  height: 80px;
+}
+
+#custom-cursor.expanded-cta .cursor-text {
+  bottom: -44px;
+  font-size: 0.62rem;
+}
+
+/* --------------------------------------------------------------------------
+   SCROLL PROGRESS BAR — TECTONIC ACCENT
+   -------------------------------------------------------------------------- */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   width: 0%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--text-accent), #ffffff);
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--text-accent), var(--accent-cyan));
   z-index: 1001;
-  transition: width 0.1s ease-out;
+  transition: width 0.08s ease-out;
 }
 
-/* Layout Utilities */
+/* --------------------------------------------------------------------------
+   LAYOUT UTILITIES — SWISS GRID FOUNDATION
+   -------------------------------------------------------------------------- */
 .container {
   width: 100%;
-  max-width: var(--container-max);
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 0 var(--gutter);
+  padding: 0 clamp(16px, 4vw, 80px);
 }
 
-/* Header & Navigation */
+.section-padding {
+  padding: clamp(80px, 12vh, 180px) 0;
+}
+
+/* Visually hidden utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER & NAVIGATION — FIXED TECTONIC HEADER
+   -------------------------------------------------------------------------- */
 header.site-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 900;
-  padding: 24px var(--gutter);
+  z-index: var(--z-header);
+  padding: 20px calc(var(--gutter) / 2);
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: background 0.4s var(--ease-out-expo), padding 0.4s var(--ease-out-expo), backdrop-filter 0.4s;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 header.site-header.scrolled {
-  background: rgba(7, 7, 7, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 16px var(--gutter);
+  background: rgba(5, 5, 5, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 12px calc(var(--gutter) / 2);
   border-bottom: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 900px) {
+  header.site-header {
+    padding: 16px calc(var(--gutter) / 2);
+  }
+  header.site-header.scrolled {
+    padding: 12px calc(var(--gutter) / 2);
+  }
 }
 
 .brand-logo {
@@ -184,26 +269,26 @@ header.site-header.scrolled {
 
 .brand-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   line-height: 1;
 }
 
 .brand-tagline {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 2.5px;
-  color: var(--text-accent);
+  font-size: 0.52rem;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
   text-transform: uppercase;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .nav-center {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: clamp(24px, 4vw, 36px);
   list-style: none;
 }
 
@@ -215,13 +300,13 @@ header.site-header.scrolled {
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 2px;
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-secondary);
   text-decoration: none;
   position: relative;
-  padding: 6px 0;
+  padding: 4px 0;
   transition: color var(--transition-fast);
 }
 
@@ -247,56 +332,12 @@ header.site-header.scrolled {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: clamp(12px, 3vw, 20px);
 }
 
-.btn-cta {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--bg-primary);
-  background-color: var(--text-accent);
-  padding: 12px 22px;
-  border-radius: 2px;
-  text-decoration: none;
-  font-weight: 700;
-  border: 1px solid var(--text-accent);
-  transition: background-color 0.3s, color 0.3s, transform 0.3s var(--ease-out-expo);
-  cursor: pointer;
-}
-
-.btn-cta:hover {
-  background-color: transparent;
-  color: var(--text-accent);
-  transform: translateY(-2px);
-}
-
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  cursor: pointer;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px;
-}
-
-@media (max-width: 900px) {
-  .menu-toggle {
-    display: flex;
-  }
-}
-
-.menu-toggle span {
-  width: 24px;
-  height: 1.5px;
-  background-color: var(--text-primary);
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-/* Hero Section — Monolithic High-Contrast Display */
+/* --------------------------------------------------------------------------
+   HERO SECTION — MONOLITHIC HIGH-CONTRAST DISPLAY
+   -------------------------------------------------------------------------- */
 section.hero {
   position: relative;
   min-height: 100vh;
@@ -304,9 +345,10 @@ section.hero {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-bottom: clamp(40px, 8vh, 100px);
-  padding-top: 140px;
+  padding-bottom: clamp(48px, 10vh, 120px);
+  padding-top: 150px;
   overflow: hidden;
+  background: #000;
 }
 
 .hero-bg-container {
@@ -321,16 +363,27 @@ section.hero {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.42) contrast(1.15);
-  transform: scale(1.08);
-  transition: transform 1.8s var(--ease-out-expo);
+  filter: brightness(0.38) contrast(1.22);
+  transform: scale(1.12);
+  transition: transform 2.2s var(--ease-out-expo);
+  filter: url(#brightnessAdjust);
+}
+
+.hero-bg-image:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 850px) {
+  .hero-bg-image {
+    transform: scale(1.08);
+  }
 }
 
 .hero-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(7,7,7,0.2) 0%, rgba(7,7,7,0.85) 75%, rgba(7,7,7,0.98) 100%),
-              linear-gradient(to top, rgba(7,7,7,1) 0%, rgba(7,7,7,0.3) 50%, rgba(7,7,7,0.6) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(5,5,5,0.1) 0%, rgba(5,5,5,0.4) 55%, rgba(5,5,5,0.85) 100%),
+              linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.4) 50%, rgba(5,5,5,0.7) 100%);
 }
 
 .hero-content {
@@ -341,87 +394,87 @@ section.hero {
 .hero-meta-badge {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
+  font-size: 0.58rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 24px;
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--accent-cyan);
+  margin-bottom: 20px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
 }
 
 .hero-meta-badge::before {
   content: '';
-  width: 6px;
-  height: 6px;
-  background-color: var(--text-accent);
+  width: 4px;
+  height: 4px;
+  background-color: var(--accent-cyan);
   border-radius: 50%;
   display: inline-block;
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.3); opacity: 0.3; }
-  100% { transform: scale(0.95); opacity: 0.8; }
+  0% { transform: scale(0.92); opacity: 0.7; }
+  50% { transform: scale(1.25); opacity: 0.2; }
+  100% { transform: scale(0.92); opacity: 0.7; }
 }
 
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 6.5vw, 6.2rem);
+  font-size: var(--font-display-size);
   font-weight: 300;
   line-height: 1.02;
-  letter-spacing: -1.5px;
-  max-width: 1100px;
-  margin-bottom: 32px;
+  letter-spacing: -1.8px;
+  max-width: 1150px;
+  margin-bottom: 36px;
   color: #ffffff;
 }
 
 .hero-title em {
   font-style: italic;
   font-family: var(--font-serif);
-  color: var(--text-accent);
+  color: var(--accent-cyan);
   font-weight: 300;
 }
 
 .hero-sub-grid {
   display: grid;
-  grid-template-columns: 1.2fr 2fr;
-  gap: 40px;
+  grid-template-columns: 1.3fr 2fr;
+  gap: clamp(32px, 6vw, 56px);
   align-items: start;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 32px;
+  padding-top: 28px;
 }
 
 @media (max-width: 850px) {
   .hero-sub-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
   }
 }
 
 .hero-manifesto-excerpt {
-  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.65;
   color: var(--text-secondary);
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .hero-specs-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 14px;
 }
 
 @media (max-width: 640px) {
   .hero-specs-strip {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 12px;
   }
 }
 
@@ -432,23 +485,25 @@ section.hero {
 
 .spec-label {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 2px;
+  font-size: 0.52rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .spec-val {
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-primary);
 }
 
-/* Tectonic Manifesto Section */
+/* --------------------------------------------------------------------------
+   TECTONIC MANIFESTO SECTION
+   -------------------------------------------------------------------------- */
 section.manifesto-section {
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(80px, 12vh, 180px) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-subtle);
   position: relative;
@@ -456,31 +511,31 @@ section.manifesto-section {
 
 .section-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 3.5px;
+  font-size: 0.62rem;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 16px;
+  color: var(--accent-cyan);
+  margin-bottom: 14px;
   display: block;
 }
 
 .manifesto-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: clamp(48px, 8vw, 96px);
   align-items: center;
 }
 
 @media (max-width: 960px) {
   .manifesto-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 }
 
 .manifesto-heading {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-size: var(--font-heading-size);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -1px;
@@ -488,22 +543,24 @@ section.manifesto-section {
 }
 
 .manifesto-body {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: var(--font-body-size);
+  line-height: 1.75;
   color: var(--text-secondary);
   font-weight: 300;
 }
 
 .manifesto-body p {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-/* Materiality Interactive Showcase */
+/* --------------------------------------------------------------------------
+   MATERIALITY INTERACTIVE SHOWCASE
+   -------------------------------------------------------------------------- */
 .materials-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 48px;
+  gap: 12px;
+  margin-top: 40px;
 }
 
 @media (max-width: 768px) {
@@ -513,45 +570,49 @@ section.manifesto-section {
 }
 
 .material-card {
-  background: var(--bg-surface);
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  padding: 24px 20px;
-  transition: border-color 0.3s, transform 0.3s var(--ease-out-expo);
+  padding: 20px 16px;
+  transition: border-color 0.25s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .material-card:hover, .material-card.active {
-  border-color: var(--text-accent);
-  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+  transform: translateY(-3px);
   background: var(--bg-surface-hover);
 }
 
 .material-num {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--text-accent);
-  margin-bottom: 12px;
+  font-size: 0.55rem;
+  color: var(--accent-cyan);
+  margin-bottom: 8px;
   display: block;
 }
 
 .material-title {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .material-desc {
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* Monograph Portfolio Section */
+/* --------------------------------------------------------------------------
+   PORTFOLIO SECTION — SWISS GRID MONOGRAPH LAYOUT
+   -------------------------------------------------------------------------- */
 section.portfolio-section {
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(80px, 12vh, 180px) 0;
   position: relative;
 }
 
@@ -559,9 +620,9 @@ section.portfolio-section {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px;
 }
 
 .portfolio-title-group h2 {
@@ -573,29 +634,30 @@ section.portfolio-section {
   line-height: 1;
 }
 
-/* Filter Bar */
+/* Filter Bar — Tectonic Pill Style */
 .filter-bar {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 6px;
+  background: rgba(255, 255, 255, 0.01);
+  padding: 4px 8px;
   border: 1px solid var(--border-subtle);
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .filter-btn {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 2px;
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-secondary);
   background: transparent;
   border: none;
-  padding: 10px 18px;
+  padding: 8px 14px;
   cursor: pointer;
   border-radius: 2px;
-  transition: color 0.3s, background 0.3s;
+  transition: color 0.25s, background 0.25s;
+  font-weight: 500;
 }
 
 .filter-btn:hover {
@@ -604,15 +666,23 @@ section.portfolio-section {
 
 .filter-btn.active {
   color: var(--bg-primary);
-  background: var(--text-accent);
+  background: var(--accent-cyan);
   font-weight: 700;
 }
 
-/* Portfolio Asymmetric Swiss Grid */
+/* --------------------------------------------------------------------------
+   MONOGRID CARD — ASYMMETRIC SWISS GRID
+   -------------------------------------------------------------------------- */
 .monograph-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: clamp(20px, 3vw, 40px);
+  gap: clamp(16px, 3vw, 32px);
+}
+
+@media (max-width: 960px) {
+  .monograph-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Card Positioning Spans */
@@ -622,12 +692,13 @@ section.portfolio-section {
   border: 1px solid var(--border-subtle);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.6s var(--ease-out-expo), border-color 0.4s;
+  transition: transform 0.55s var(--ease-out-expo), border-color 0.3s;
+  will-change: transform;
 }
 
 .monograph-card:hover {
   border-color: var(--border-accent);
-  transform: translateY(-6px);
+  transform: translateY(-5px) translateZ(0);
 }
 
 .monograph-card.span-8 { grid-column: span 8; }
@@ -642,53 +713,65 @@ section.portfolio-section {
   }
 }
 
+@media (max-width: 720px) {
+  .monograph-card span-8, .monograph-card span-4, .monograph-card span-6 {
+    grid-column: span 12 !important;
+  }
+}
+
+/* Media Wrapper with Aspect Ratio Lock */
 .card-media-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
   overflow: hidden;
-  background-color: #141414;
+  background-color: #0d0d0d;
 }
 
 .monograph-card.span-4 .card-media-wrapper {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 5.2;
 }
 
 .monograph-card.span-6 .card-media-wrapper {
-  aspect-ratio: 16 / 11;
+  aspect-ratio: 16 / 10.5;
+}
+
+.monograph-card.span-8 .card-media-wrapper {
+  aspect-ratio: 16 / 13;
 }
 
 .card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.2s var(--ease-out-expo), filter 0.6s;
-  filter: brightness(0.9) contrast(1.05);
+  transition: transform 1.1s var(--ease-out-expo), filter 0.5s;
+  filter: brightness(0.85) contrast(1.08);
 }
 
 .monograph-card:hover .card-img {
-  transform: scale(1.06);
-  filter: brightness(1) contrast(1.1);
+  transform: scale(1.08);
+  filter: brightness(1) contrast(1.12);
 }
 
+/* Category Tag */
 .card-category-tag {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 12px;
+  left: 12px;
   z-index: 3;
   font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 2px;
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  background: rgba(7, 7, 7, 0.85);
-  backdrop-filter: blur(8px);
-  color: var(--text-accent);
-  padding: 6px 12px;
+  background: rgba(5, 5, 5, 0.78);
+  backdrop-filter: blur(6px);
+  color: var(--accent-cyan);
+  padding: 4px 10px;
   border: 1px solid var(--border-subtle);
 }
 
+/* Card Info Panel */
 .card-info {
-  padding: 24px 28px;
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -700,69 +783,71 @@ section.portfolio-section {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .card-title {
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
   color: var(--text-primary);
 }
 
 .card-year {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-accent);
+  font-size: 0.62rem;
+  color: var(--accent-cyan);
 }
 
 .card-subtitle {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--text-secondary);
   font-weight: 300;
-  line-height: 1.5;
-  margin-bottom: 16px;
+  line-height: 1.45;
+  margin-bottom: 12px;
 }
 
 .card-specs-row {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--text-muted);
   text-transform: uppercase;
   border-top: 1px dashed var(--border-subtle);
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .card-specs-row span {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .card-action-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 2px;
+  font-size: 0.55rem;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-top: 12px;
+  color: var(--accent-cyan);
+  margin-top: 8px;
   font-weight: 700;
-  transition: gap 0.3s var(--ease-out-expo);
+  transition: gap 0.2s var(--ease-out-expo);
 }
 
 .monograph-card:hover .card-action-link {
-  gap: 14px;
+  gap: 12px;
 }
 
-/* Principal / Studio Profile Section */
+/* --------------------------------------------------------------------------
+   PRINCIPAL / STUDIO PROFILE SECTION
+   -------------------------------------------------------------------------- */
 section.principal-section {
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(80px, 12vh, 180px) 0;
   background-color: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
@@ -771,14 +856,14 @@ section.principal-section {
 .principal-grid {
   display: grid;
   grid-template-columns: 5fr 7fr;
-  gap: 60px;
+  gap: clamp(48px, 8vw, 96px);
   align-items: center;
 }
 
 @media (max-width: 960px) {
   .principal-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 }
 
@@ -793,13 +878,13 @@ section.principal-section {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%) contrast(1.15) brightness(0.9);
-  transition: filter 0.8s, transform 0.8s var(--ease-out-expo);
+  filter: grayscale(0%) contrast(1.1) brightness(1);
+  transition: filter 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
 }
 
 .principal-portrait-wrapper:hover img {
-  filter: grayscale(0%) contrast(1.05) brightness(1);
-  transform: scale(1.03);
+  filter: grayscale(5%) contrast(1.05) brightness(1.02);
+  transform: scale(1.02);
 }
 
 .principal-details h2 {
@@ -807,39 +892,39 @@ section.principal-section {
   font-size: clamp(2.2rem, 4vw, 3.6rem);
   font-weight: 300;
   line-height: 1.1;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .principal-title {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 3px;
+  font-size: 0.65rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 28px;
+  color: var(--accent-cyan);
+  margin-bottom: 24px;
   display: block;
 }
 
 .principal-bio {
-  font-size: 0.95rem;
-  line-height: 1.8;
+  font-size: 0.9rem;
+  line-height: 1.7;
   color: var(--text-secondary);
   font-weight: 300;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .credentials-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 16px;
   list-style: none;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 24px;
+  padding-top: 20px;
 }
 
 .credentials-list li {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--text-primary);
   display: flex;
   flex-direction: column;
@@ -847,22 +932,24 @@ section.principal-section {
 
 .credentials-list li span {
   color: var(--text-muted);
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
-/* Monograph Modal Reader (Interactive Case Study Drawer) */
+/* --------------------------------------------------------------------------
+   MONOGRAPH MODAL READER — INTERACTIVE CASE STUDY DRAWER
+   -------------------------------------------------------------------------- */
 .monograph-modal {
   position: fixed;
   inset: 0;
-  z-index: 2000;
-  background: rgba(7, 7, 7, 0.96);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  z-index: var(--z-modal);
+  background: rgba(5, 5, 5, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s var(--ease-out-expo);
+  transition: opacity 0.4s var(--ease-out-expo);
   display: flex;
   justify-content: flex-end;
   overflow: hidden;
@@ -875,15 +962,15 @@ section.principal-section {
 
 .modal-content-container {
   width: 100%;
-  max-width: 1200px;
-  height: 100%;
+  max-width: 1320px;
+  height: 100vh;
   background: var(--bg-primary);
   border-left: 1px solid var(--border-medium);
   overflow-y: auto;
-  padding: clamp(30px, 5vw, 70px);
+  padding: clamp(40px, 6vw, 96px);
   position: relative;
-  transform: translateX(100px);
-  transition: transform 0.6s var(--ease-out-expo);
+  transform: translateX(100%);
+  transition: transform 0.55s var(--cubic);
 }
 
 .monograph-modal.open .modal-content-container {
@@ -891,85 +978,86 @@ section.principal-section {
 }
 
 .modal-close-btn {
-  position: sticky;
-  top: 0;
-  float: right;
+  position: absolute;
+  top: clamp(20px, 4vw, 32px);
+  right: clamp(20px, 4vw, 32px);
   z-index: 100;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1.2rem;
-  transition: background 0.3s, transform 0.3s;
+  font-size: 1.15rem;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .modal-close-btn:hover {
-  background: var(--text-accent);
+  background: var(--accent-cyan);
   color: var(--bg-primary);
   transform: rotate(90deg);
 }
 
 .modal-header-meta {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
+  font-size: 0.55rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 12px;
+  color: var(--accent-cyan);
+  margin-bottom: 10px;
   display: block;
 }
 
 .modal-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -0.8px;
   line-height: 1.05;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 }
 
 .modal-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
   font-weight: 300;
-  margin-bottom: 36px;
-  max-width: 800px;
+  margin-bottom: 32px;
+  max-width: 850px;
 }
 
 /* Modal Navigation Tabs */
 .modal-tabs {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 36px;
+  margin-bottom: 28px;
   overflow-x: auto;
+  padding-bottom: 12px;
 }
 
 .tab-btn {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 2px;
+  font-size: 0.58rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   background: none;
   border: none;
   color: var(--text-muted);
-  padding: 12px 16px;
+  padding: 8px 12px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  transition: color 0.3s, border-color 0.3s;
+  transition: color 0.25s, border-color 0.25s;
   white-space: nowrap;
 }
 
 .tab-btn.active {
-  color: var(--text-accent);
-  border-color: var(--text-accent);
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
   font-weight: 700;
 }
 
@@ -979,11 +1067,11 @@ section.principal-section {
 
 .tab-panel.active {
   display: block;
-  animation: fadeIn 0.4s ease-out;
+  animation: fadeIn 0.35s var(--ease-out-expo);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -991,8 +1079,8 @@ section.principal-section {
 .modal-gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-bottom: 40px;
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
 @media (max-width: 768px) {
@@ -1013,18 +1101,18 @@ section.principal-section {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease-out-expo);
+  transition: transform 0.6s var(--ease-out-expo);
 }
 
 .modal-gallery-item:hover img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 /* Specs Table */
 .specs-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .specs-table tr {
@@ -1033,30 +1121,30 @@ section.principal-section {
 
 .specs-table th {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 2px;
+  font-size: 0.58rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-muted);
   text-align: left;
-  padding: 16px 0;
-  width: 30%;
+  padding: 12px 0;
+  width: 35%;
 }
 
 .specs-table td {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
-  padding: 16px 0;
+  padding: 12px 0;
   font-weight: 300;
 }
 
 /* Interactive SVG Blueprint Schematic Viewer */
 .blueprint-container {
-  background: #050a0e; /* Architectural Blueprint Dark Blue/Black */
-  border: 1px solid rgba(0, 180, 216, 0.3);
-  padding: 32px;
-  border-radius: 4px;
+  background: #0a0f14;
+  border: 1px solid rgba(72, 202, 228, 0.18);
+  padding: 24px;
+  border-radius: 2px;
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   overflow: hidden;
 }
 
@@ -1064,22 +1152,22 @@ section.principal-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px dashed rgba(0, 180, 216, 0.3);
-  padding-bottom: 16px;
-  margin-bottom: 24px;
+  border-bottom: 1px dashed rgba(72, 202, 228, 0.22);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .blueprint-title {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  color: #00b4d8;
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: var(--accent-cyan);
   text-transform: uppercase;
 }
 
 .blueprint-svg-wrapper {
   width: 100%;
-  max-height: 450px;
+  max-height: 420px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1088,23 +1176,26 @@ section.principal-section {
 .blueprint-svg-wrapper svg {
   width: 100%;
   height: auto;
-  max-height: 400px;
+  max-height: 380px;
 }
 
-/* Private Consultation Drawer / Form */
+/* --------------------------------------------------------------------------
+   PRIVATE CONSULTATION MODAL / FORM
+   -------------------------------------------------------------------------- */
 .consultation-modal {
   position: fixed;
   inset: 0;
-  z-index: 2100;
-  background: rgba(7, 7, 7, 0.96);
-  backdrop-filter: blur(24px);
+  z-index: var(--z-modal + 100);
+  background: rgba(5, 5, 5, 0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s var(--ease-out-expo);
+  transition: opacity 0.4s var(--ease-out-expo);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 20px;
 }
 
 .consultation-modal.open {
@@ -1114,25 +1205,25 @@ section.principal-section {
 
 .consultation-card {
   width: 100%;
-  max-width: 700px;
+  max-width: 680px;
   background: var(--bg-surface);
   border: 1px solid var(--border-medium);
-  padding: clamp(30px, 5vw, 60px);
+  padding: clamp(36px, 5vw, 56px);
   position: relative;
 }
 
 .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .form-label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 2px;
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 8px;
+  color: var(--accent-cyan);
+  margin-bottom: 6px;
 }
 
 .form-input, .form-select, .form-textarea {
@@ -1140,23 +1231,30 @@ section.principal-section {
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  padding: 14px 18px;
+  padding: 12px 14px;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   border-radius: 2px;
-  transition: border-color 0.3s;
+  transition: border-color 0.2s;
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
-  border-color: var(--text-accent);
+  border-color: var(--accent-cyan);
 }
 
-/* Footer Section */
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* --------------------------------------------------------------------------
+   FOOTER SECTION — TECTONIC GRID FOOTER
+   -------------------------------------------------------------------------- */
 footer.site-footer {
   background: var(--bg-primary);
   border-top: 1px solid var(--border-subtle);
-  padding: 80px 0 40px;
+  padding: 80px 0 32px;
   position: relative;
 }
 
@@ -1164,7 +1262,7 @@ footer.site-footer {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 @media (max-width: 850px) {
@@ -1181,11 +1279,11 @@ footer.site-footer {
 
 .footer-col-title {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
+  font-size: 0.58rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 20px;
+  color: var(--accent-cyan);
+  margin-bottom: 18px;
 }
 
 .footer-links {
@@ -1193,14 +1291,14 @@ footer.site-footer {
 }
 
 .footer-links li {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .footer-links a {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.2s;
 }
 
 .footer-links a:hover {
@@ -1212,21 +1310,24 @@ footer.site-footer {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 32px;
+  padding-top: 24px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--text-muted);
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* Mobile Nav Drawer */
+/* --------------------------------------------------------------------------
+   MOBILE NAV DRAWER
+   -------------------------------------------------------------------------- */
 .mobile-nav-drawer {
   position: fixed;
   inset: 0;
-  z-index: 1500;
-  background: rgba(7, 7, 7, 0.98);
-  backdrop-filter: blur(20px);
+  z-index: var(--z-modal);
+  background: rgba(5, 5, 5, 0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1244,15 +1345,45 @@ footer.site-footer {
 
 .mobile-nav-link {
   font-family: var(--font-display);
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-primary);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.25s;
 }
 
 .mobile-nav-link:hover {
-  color: var(--text-accent);
+  color: var(--accent-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   SCROLL SNAP & PERFORMANCE POLISH
+   -------------------------------------------------------------------------- */
+html {
+  overscroll-behavior: none;
+}
+
+@media (pointer: coarse) {
+  .monograph-card {
+    touch-action: pan-y;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PRINT MEDIA
+   -------------------------------------------------------------------------- */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .noise-overlay, #custom-cursor, .scroll-progress {
+    display: none;
+  }
+  .monograph-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }
