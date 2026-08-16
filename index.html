@@ -1,3 +1,21 @@
+<!-- Custom Magnetic Cursor -->
+<div id="custom-cursor">
+  <span class="cursor-text"></span>
+</div>
+
+<!-- WebGL Background Canvas -->
+<canvas id="webgl-canvas"></canvas>
+
+<!-- Tactile Noise Grain Overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress"></div>
+
+<!-- Skip to content -->
+<a href="#portfolio" class="skip-link">Pular para o conteúdo principal</a>
+
+<nav id="nav">
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,6 +26,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- CDN Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
