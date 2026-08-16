@@ -116,12 +116,12 @@ function initCustomCursor() {
 
   // Hover targets with contextual text and shader state
   const hoverables = [
-    { selector: '.monograph-card', text: 'EXPLORE MONOGRAPH', hitRadius: 80 },
-    { selector: '.btn-cta', text: 'INQUIRY', hitRadius: 64 },
-    { selector: '.material-card', text: 'SELECT', hitRadius: 48 },
-    { selector: '.nav-link, .filter-btn', text: 'VIEW', hitRadius: 56 },
-    { selector: '.modal-close-btn', text: 'CLOSE', hitRadius: 40 },
-    { selector: '.hero-title', text: 'READ', hitRadius: 120 },
+    { selector: '.monograph-card', text: 'EXPLORAR MONOGRAFO', hitRadius: 80 },
+    { selector: '.btn-cta', text: 'SOLICITAR', hitRadius: 64 },
+    { selector: '.material-card', text: 'SELECIONAR', hitRadius: 48 },
+    { selector: '.nav-link, .filter-btn', text: 'VER', hitRadius: 56 },
+    { selector: '.modal-close-btn', text: 'FECHAR', hitRadius: 40 },
+    { selector: '.hero-title', text: 'LER', hitRadius: 120 },
   ];
 
   // Intersection observers for hit area detection
@@ -988,7 +988,7 @@ function initConsultationModal() {
             if (lenis) lenis.start();
             
             // Success state
-            alert('Thank you for your inquiry. Mass Arquitetura principal office will contact you within 24 hours.');
+            alert('Obrigado pela sua inquiry. A principal office da Mass Arquitetura entrará em contato dentro de 24 horas.');
             
             // Reset form
             form.reset();
